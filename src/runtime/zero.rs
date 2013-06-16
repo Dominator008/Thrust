@@ -35,6 +35,8 @@
 
 #[allow(ctypes)];
 
+use runtime::{memcpy,memcmp};
+
 // Built-in traits
 
 #[lang="copy"]
@@ -48,8 +50,11 @@ pub trait Const {}
 
 #[lang="drop"]
 pub trait Drop {
-    fn finalize(&self);
+	fn finalize(&self);
 }
+
+#[lang="sized"]
+pub trait Sized {}
 
 // Operator overloading
 
@@ -290,10 +295,6 @@ extern {
     pub fn free(ptr: *u8);
     #[fast_ffi]
     pub fn abort() -> !;
-    #[fast_ffi]
-    pub fn memcpy(dest: *mut u8, src: *u8, size: uint) -> *u8;
-    #[fast_ffi]
-    pub fn memcmp(a: *u8, b: *u8, size: uint) -> i32;
 }
 
 // Rust intrinsic dependencies

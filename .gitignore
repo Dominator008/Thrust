@@ -1,4 +1,25 @@
+# build generated
+
 *.img
+*.iso
 *.swp
 *.bin
 *.o
+.ninja_deps
+.ninja_log
+config.ninja
+isofiles
+
+# text editor
+*.swp
+*~
+
+# OS-generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db

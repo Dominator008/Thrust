@@ -1,69 +1,55 @@
-# rustboot
+# kRnel #
 
-A tiny 32 bit kernel written in Rust.
+A small 64-bit, Multiboot kernel written in Rust.
 
-I was inspired to download Rust and try to do this after seeing [zero.rs](https://github.com/pcwalton/zero.rs) - a stub that lets Rust programs run almost freestanding.
+## Dependencies ##
+#### Build ####
+* a cross compiler for x86-64
+* `nasm`
+* `rust` (from git)
 
-It paints the screen bright red and then hangs. That's it:
+#### Runtime ####
+* a Multiboot-compliant bootloader
 
-![](http://i.imgur.com/NWRehJJ.png)
+#### Emulation ####
+* `qemu`
 
-## Setup
+## Build Instructions ##
 
-You need a few things to run rustboot:
-
-1. `qemu`
-2. a cross-compiler for i386
-3. `nasm`
-4. Rust's `incoming` branch.
-
-### OSX
-
-To set things up on OSX, do this:
-
-Install `nasm` and `qemu` from homebrew:
+#### Linux ####
+Most distributions have compilers that will work just fine out-of-the-box, so all you need is `qemu`, `nasm`, and `rust`.
 
 ```bash
-$ brew install nasm
-$ brew install quemu
+$ yaourt -S nasm qemu rust-git
+$ cd path/to/rustboot
+$ ./configure
+$ ninja
 ```
 
-Install binutils from source.
-
-I personally keep things I manually compile limited to my home directory, so
-I use the `--prefix=/Users/steve` option. Put this wherever you want, of
-course.
+#### OSX ####
+You should use Homebrew for as much as possible.
 
 ```bash
+$ brew install nasm qemu
 $ wget 'ftp://sourceware.org/pub/binutils/snapshots/binutils-2.23.52.tar.bz2'
-$ ./configure --target=i386-elf --prefix=/Users/steve
+$ ./configure --target=x86-64-elf --prefix=/somewhere/in/the/path
 $ make && make install
-```
-
-To get edge Rust going, grab it from git:
-
-```bash
-$ git clone https://github.com/mozilla/rust
+$ git clone git://github.com/mozilla/rust
 $ cd rust
-$ git checkout incoming
-$ ./configure --prefix=/Users/steve
+$ ./configure --prefix=/somewhere/in/the/path
 $ make && make install
+$ cd path/to/rustboot
+$ ./configure
+$ ninja
 ```
 
-Same thing about the prefix applies.
-
-Then, just make sure that `~/bin` is in your `PATH`, if you're using a prefix.
-
-## Running it
-
-To compile, simply
-
+## Emulation Instructions ##
 ```bash
-$ make
+$ ninja run
 ```
 
-To run,
+## Legal ##
+Copyright (C) Arcterus
+All rights reserved.
 
-```bash
-$ make run
-```
+See License.txt for description of this project's license.

@@ -1,0 +1,39 @@
+cflags = -O3 -ffreestanding -fno-builtin -nostdlib -nostdinc -nostdinc++ $
+   -fcolor-diagnostics
+rustflags = --opt-level 3 --target i386-intel-linux --lib -c
+ldflags = -T linker.ld
+asmflags = -f elf32
+
+rustc = rustc
+ld = ld
+cc = clang
+asm = yasm
+qemu = qemu-system-i386
+
+rule rustc
+   command = $rustc $rustflags -o $out $in
+   description = RUSTC $out
+
+rule cc
+   command = $cc $cflags -o $out $in
+   description = CC $out
+
+rule asm
+   command = $asm $asmflags -o $out $in
+   description = ASM $out
+
+rule ld
+   command = $ld $ldflags -o $out $in
+   description = LD $out
+
+rule cat
+   command = cat $in > $out
+   description = CAT $out
+
+rule cp
+   command = cp -r $in $out
+   description = CP $out
+
+rule qemu
+   command = $qemu -fda $in
+   description = QEMU $in

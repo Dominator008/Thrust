@@ -1,0 +1,16 @@
+#!/bin/sh
+
+case `uname -s` in
+	Darwin)
+		OS=darwin
+		;;
+	Linux)
+		OS=linux
+		;;
+	*)
+		echo "Unsupported OS: `uname -s`" >&2
+		exit 1
+		;;
+esac
+
+cp config/${OS}.ninja config.ninja

@@ -1,0 +1,7 @@
+curdir = src/boot
+
+build $curdir/loader.bin: asm $curdir/loader.asm
+   asmflags = -f bin
+
+default $curdir/loader.bin
+
