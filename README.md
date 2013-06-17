@@ -49,7 +49,7 @@ $ ninja run
 ```
 
 ## Legal ##
-Copyright (C) Arcterus
+Copyright (C) 2013 Arcterus.
 All rights reserved.
 
 See License.txt for description of this project's license.
