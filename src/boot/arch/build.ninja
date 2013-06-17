@@ -1,0 +1,3 @@
+curdir = src/boot/arch
+
+subninja $curdir/target/build.ninja

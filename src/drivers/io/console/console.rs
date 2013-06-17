@@ -1,8 +1,10 @@
 #[author = "Arcterus"];
 #[license = "MPL v2.0"];
 
-#[path = "arch/x86.rs"]
-pub mod x86;
+pub use drivers::io::console::target::*;
+
+#[path = "arch/target/console.rs"]
+pub mod target;
 
 pub enum Color {
 	Black      = 0,

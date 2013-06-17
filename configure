@@ -14,3 +14,10 @@ case `uname -s` in
 esac
 
 cp config/${OS}.ninja config.ninja
+
+ARCH=`uname -m`
+
+for dir in `find -name arch`; do
+	ln -s ${ARCH}/ "$dir"/target
+done
+

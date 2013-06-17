@@ -1,3 +1,7 @@
+# configure generated
+config.ninja
+target
+
 # build generated
 
 *.iso
@@ -5,7 +9,6 @@
 *.o
 .ninja_deps
 .ninja_log
-config.ninja
 isofiles
 
 # text editor

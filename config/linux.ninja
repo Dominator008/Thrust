@@ -38,11 +38,9 @@ rule mkdir
    command = mkdir -p $out
    description = MKDIR $out
 
-#rule genrescue
-#   command = genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot $
-#               -boot-load-size 4 -boot-info-table -input-charset utf8 -quiet $
-#               -o $out $in
-#   description = GENRESCUE $out
+rule touch
+   command = touch $out
+   description = TOUCH $out
 
 rule genrescue
    command = grub-mkrescue -o $out $in

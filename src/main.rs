@@ -7,7 +7,6 @@
 #[no_std];
 #[no_core];
 
-//use runtime::*;
 use drivers::io::console;
 
 #[path = "runtime/runtime.rs"]
@@ -22,5 +21,5 @@ mod drivers {
 
 #[no_mangle]
 pub unsafe fn main() {
-   console::x86::clear_screen(console::DarkGray);
+   console::clear_screen(console::DarkGray);
 }

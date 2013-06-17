@@ -1,0 +1,3 @@
+curdir = src/boot/arch/target
+
+build $curdir/setup.o: asm $curdir/setup.asm
