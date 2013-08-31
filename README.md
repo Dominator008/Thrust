@@ -20,7 +20,7 @@ A small 64-bit, Multiboot kernel written in Rust.
 Most distributions have compilers that will work just fine out-of-the-box, so all you need is `qemu`, `nasm`, and `rust`.
 
 ```bash
-$ yaourt -S nasm qemu rust-git
+$ yaourt -S nasm qemu rust
 $ cd path/to/rustboot
 $ ./configure
 $ ninja
