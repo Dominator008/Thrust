@@ -3,20 +3,20 @@
 
 use runtime::zero::{Eq};
 
-impl<T> Eq for *const T {
+impl<T> Eq for *T {
 	#[inline(always)]
-	fn eq(&self, other: &*const T) -> bool {
+	fn eq(&self, other: &*T) -> bool {
 		(*self as uint) == (*other as uint)
 	}
 
 	#[inline(always)]
-	fn ne(&self, other: &*const T) -> bool {
+	fn ne(&self, other: &*T) -> bool {
 		!self.eq(other)
 	}
 }
 
 /*impl<T> *T {
-	pub fn is_null<T>(&const self) -> bool {
+	pub fn is_null<T>(&self) -> bool {
 		to_const_unsafe_ptr(self) == null()
 	}
 }*/
@@ -32,18 +32,18 @@ pub fn mut_null<T>() -> *mut T {
 }
 
 #[inline(always)]
-pub fn is_null<T>(ptr: *const T) -> bool {
+pub fn is_null<T>(ptr: *T) -> bool {
 	ptr == null()
 }
 
 #[inline(always)]
-pub fn is_not_null<T>(ptr: *const T) -> bool {
+pub fn is_not_null<T>(ptr: *T) -> bool {
 	!is_null(ptr)
 }
 
 #[inline(always)]
-pub fn to_const_unsafe_ptr<T>(thing: &const T) -> *const T {
-	thing as *const T
+pub fn to_const_unsafe_ptr<T>(thing: &T) -> *T {
+	thing as *T
 }
 
 #[inline(always)]

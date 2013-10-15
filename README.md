@@ -6,21 +6,23 @@ A small 64-bit, Multiboot kernel written in Rust.
 #### Build ####
 * a cross compiler for x86-64
 * `nasm`
-* `rust` (from git)
+* `rust` (0.8)
+* `ninja`
 
 #### Runtime ####
 * a Multiboot-compliant bootloader
 
 #### Emulation ####
 * `qemu`
+* `ninja`
 
 ## Build Instructions ##
 
 #### Linux ####
-Most distributions have compilers that will work just fine out-of-the-box, so all you need is `qemu`, `nasm`, and `rust`.
+Most distributions have compilers that will work just fine out-of-the-box, so all you need is `qemu`, `nasm`, `rust`, and `ninja`.
 
 ```bash
-$ sudo pacman -S nasm qemu rust
+$ sudo yaourt -S nasm qemu rust ninja
 $ cd path/to/rustboot
 $ ./configure
 $ ninja
@@ -30,7 +32,7 @@ $ ninja
 You should use Homebrew for as much as possible.
 
 ```bash
-$ brew install nasm qemu
+$ brew install nasm qemu ninja
 $ wget 'ftp://sourceware.org/pub/binutils/snapshots/binutils-2.23.52.tar.bz2'
 $ ./configure --target=x86-64-elf --prefix=/somewhere/in/the/path
 $ make && make install

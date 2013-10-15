@@ -1,14 +1,14 @@
 cflags = -O3 -ffreestanding -fno-builtin -nostdlib -nostdinc -nostdinc++ $
-   -fcolor-diagnostics
-rustflags = --opt-level 3 --target i386-intel-linux --lib -c
-ldflags = -T linker.ld
-asmflags = -f elf32
+   -fcolor-diagnostics -mcmodel=kernel
+rustflags = --opt-level 3 --target x86_64-intel-linux --lib -c
+ldflags = -T linker.ld -nodefaultlibs -melf_x86_64 -z max-page-size=0x1000
+asmflags = -f elf64
 
 rustc = rustc
 ld = ld
 cc = clang
-asm = yasm
-qemu = qemu-system-i386
+asm = nasm
+qemu = qemu-system-x86_64
 
 rule rustc
    command = $rustc $rustflags -o $out $in
@@ -34,6 +34,18 @@ rule cp
    command = cp -r $in $out
    description = CP $out
 
+rule mkdir
+   command = mkdir -p $out
+   description = MKDIR $out
+
+rule touch
+   command = touch $out
+   description = TOUCH $out
+
+rule genrescue
+   command = grub-mkrescue -o $out $in
+   description = GENRESCUE $out
+
 rule qemu
-   command = $qemu -fda $in
+   command = $qemu -cdrom $in
    description = QEMU $in
