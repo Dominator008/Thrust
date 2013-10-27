@@ -23,5 +23,5 @@ mod drivers {
 #[no_mangle]
 pub fn main() {
    console::clear_screen();
-	console::print("hi");
+	console::print("iiiiiiiiiiiiiiiiiiiiiiiiiii\niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\x08\x08\x08\x08\x08test");
 }

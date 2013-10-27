@@ -52,16 +52,25 @@ pub fn clear_screen() {
 pub fn color_print(msg: &str, foreground: Color, background: Color) {
 	unsafe {
 		do msg.each_byte() |byte| {
-			let pos = row * MAX_COLUMN + col;
-			(*SCREEN)[pos].char = byte as u8;
-			(*SCREEN)[pos].attr = ((background as u8) << 4) + (foreground as u8);
-			col += 1;
-			if col == MAX_COLUMN {
-				col = 0;
-				row += 1;
-				if row == MAX_ROW {
-					row -= 1;
-					clear_line(row, background);
+			match byte {
+				0x0a /* newline */ => add_line(background),
+				0x0d /* carriage return */ => col = 0,
+				0x08 /* backspace */ => {
+					if col == 0 && row != 0 {
+						col = MAX_COLUMN;
+						row -= 1;
+					} else if col != 0 {
+						col -= 1;
+					}
+				}
+				byte => {
+					let pos = row * MAX_COLUMN + col;
+					(*SCREEN)[pos].char = byte as u8;
+					(*SCREEN)[pos].attr = ((background as u8) << 4) + (foreground as u8);
+					col += 1;
+					if col == MAX_COLUMN {
+						add_line(background);
+					}
 				}
 			}
 			true
@@ -88,3 +97,23 @@ fn clear_line(row: uint, background: Color) {
 	}
 }
 
+fn clear_rem_line(background: Color) {
+	unsafe {
+		let pos = row * MAX_COLUMN;
+		do iter::range(col, MAX_COLUMN) |i| {
+			(*SCREEN)[pos + *i].attr = (background as u8) << 4;
+		}
+	}
+}
+
+fn add_line(background: Color) {
+	clear_rem_line(background);
+	unsafe {
+		col = 0;
+		row += 1;
+		if row == MAX_ROW {
+			row -= 1;
+			clear_line(row, background);
+		}
+	}
+}
