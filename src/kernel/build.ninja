@@ -1,0 +1,4 @@
+curdir = src/kernel
+
+build $curdir/main.o: rustc $curdir/main.rs
+

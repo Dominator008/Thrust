@@ -1,10 +1,11 @@
 curdir = src
 
 subninja $curdir/boot/build.ninja
+subninja $curdir/kernel/build.ninja
 subninja $curdir/runtime/build.ninja
 
-build kernel.bin: ld $curdir/boot/arch/target/setup.o $curdir/runtime/runtime.o src/main.o
-
-build $curdir/main.o: rustc $curdir/main.rs
+build kernel.bin: ld $curdir/boot/arch/target/setup.o $
+                     $curdir/runtime/arch/target/runtime.o $
+                     $curdir/kernel/main.o
 
 default kernel.bin

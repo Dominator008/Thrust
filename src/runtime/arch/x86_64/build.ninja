@@ -1,0 +1,5 @@
+curdir = src/runtime/arch/target
+
+build $curdir/runtime.o: asm $curdir/runtime.asm
+
+default $curdir/runtime.o

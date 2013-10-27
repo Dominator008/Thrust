@@ -5,21 +5,23 @@
 
 #[allow(ctypes)];
 #[no_std];
-#[no_core];
 
 use drivers::io::console;
 
-#[path = "runtime/runtime.rs"]
+pub mod reset;
+
+#[path = "../runtime/mod.rs"]
 pub mod runtime;
 
+#[path = "../drivers"]
 mod drivers {
 	mod io {
-		#[path = "console/console.rs"]
 		pub mod console;
 	}
 }
 
 #[no_mangle]
-pub unsafe fn main() {
-   console::clear_screen(console::DarkGray);
+pub fn main() {
+   console::clear_screen();
+	console::print("hi");
 }

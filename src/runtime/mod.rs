@@ -1,7 +1,7 @@
 #[author = "Arcterus"];
 #[license = "MPL v2.0"];
 
-use runtime::zero::size_of;
+use self::zero::size_of;
 
 pub mod zero;
 pub mod ptr;
@@ -11,6 +11,8 @@ pub mod vec;
 pub mod uint;
 pub mod iter;
 pub mod device;
+pub mod num;
+pub mod str;
 
 #[no_mangle]
 pub unsafe fn memcmp(ptr1: *u8, ptr2: *u8, size: uint) -> i32 {

@@ -1,12 +1,8 @@
 #[author = "Arcterus"];
 #[license = "MPL v2.0"];
 
-use runtime::uint;
-use drivers::io::console;
+pub static SCREEN: *mut super::Screen = 0xb8000 as *mut super::Screen;
+pub static MAX_ROW: uint = 25;
+pub static MAX_COLUMN: uint = 80;
+pub static SCREEN_SIZE: uint = MAX_COLUMN * MAX_ROW;
 
-pub unsafe fn clear_screen(background: console::Color) {
-	do uint::iterate_step(0, 2*80*25, 2) |i| {
-		*((0xb8000 + i) as *mut u16) = (background as u16) << 12;
-		true
-	};
-}

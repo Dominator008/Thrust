@@ -1,26 +1,39 @@
 #[author = "Arcterus"];
 #[license = "MPL v2.0"];
 
-use runtime::iter;
+use super::iter;
+use super::num;
+use super::zero;
 
-pub fn iterate(low: uint, high: uint, it: &fn(uint) -> bool) -> bool {
-	iterate_step(low, high, 1, it)
-}
-
-pub fn iterate_step(low: uint, high: uint, step: uint, it: &fn(uint) -> bool) -> bool {
-	let mut i = low;
-	while i < high {
-		if !it(i) {
-			return false;
-		}
-		i += step;
-	}
-	true
-}
-
-impl iter::Times for uint {
-	#[inline(always)]
-	fn times(&self, it: &fn() -> bool) -> bool {
-		iterate(0, *self, |_| { it() })
+impl num::One for uint {
+	#[inline]
+	fn one() -> uint {
+		1u
 	}
 }
+
+impl zero::Add<uint, uint> for uint {
+	#[inline]
+	fn add(&self, rhs: &uint) -> uint {
+		*self + *rhs
+	}
+}
+
+impl zero::Ord for uint {
+	#[inline]
+	fn lt(&self, other: &uint) -> bool { *self < *other }
+	#[inline]
+	fn le(&self, other: &uint) -> bool { *self <= *other }
+	#[inline]
+	fn gt(&self, other: &uint) -> bool { *self > *other }
+	#[inline]
+	fn ge(&self, other: &uint) -> bool { *self >= *other }
+}
+
+impl num::Times for uint {
+	#[inline]
+	fn times(&self, it: &fn()) {
+		iter::range(0, *self, |_| { it(); });
+	}
+}
+

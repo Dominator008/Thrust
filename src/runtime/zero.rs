@@ -35,7 +35,7 @@
 
 #[allow(ctypes)];
 
-use runtime::{memcpy,memcmp};
+use super::{memcpy,memcmp};
 
 // Built-in traits
 
