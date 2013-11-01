@@ -11,15 +11,57 @@ use32
 
 align 8
 MbHdr:
-	dd 0x1BADB002
-	dd 0000000000000001b
-	dd -(0x1BADB002 + 0000000000000001b)
-	
+	dd 0xE85250D6
+	dd 0
+	dd HdrEnd - MbHdr
+	dd -(0xE85250D6 + 0 + (HdrEnd - MbHdr))
+
+AddrTag:
+	dw 2
+	dw 0
+	dd AddrTagEnd - AddrTag
 	dd MbHdr
 	dd _loadStart
 	dd _loadEnd
 	dd _bssEnd
+AddrTagEnd:
+
+align 8
+
+EntryTag:
+	dw 3
+	dw 0
+	dd EntryTagEnd - EntryTag
 	dd start
+EntryTagEnd:
+
+align 8
+
+;FlagsTag:
+;	dw 4
+;	dw 0
+;	dd FlagsTagEnd - FlagsTag
+;	dd (1 << 0)
+;FlagsTagEnd:
+
+align 8
+
+;FrmBufTag:
+;	dw 5
+;	dw 0
+;	dd FrmBufTagEnd - FrmBufTag
+;	dd 80
+;	dd 25
+;	dd 0
+;FrmBufTagEnd:
+
+align 8
+
+EndTags:
+	dw 0
+	dw 0
+	dd EndTagsEnd - EndTags
+EndTagsEnd:
 HdrEnd:
 
 [section .boot]

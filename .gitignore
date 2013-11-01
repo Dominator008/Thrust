@@ -1,9 +1,13 @@
+# tools generated
+/binutils*
+/grub*
+/install
+
 # configure generated
 config.ninja
 target
 
 # build generated
-
 *.iso
 *.bin
 *.o

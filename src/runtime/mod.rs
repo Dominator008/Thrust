@@ -2,6 +2,7 @@
 #[license = "MPL v2.0"];
 
 use self::zero::size_of;
+use super::console;
 
 pub mod zero;
 pub mod ptr;
@@ -13,6 +14,33 @@ pub mod iter;
 pub mod device;
 pub mod num;
 pub mod str;
+
+// Failure
+
+#[lang="fail_"]
+#[fixed_stack_segment]
+pub fn fail(expr: *u8, file: *u8, line: uint) -> ! {
+	unsafe {
+		console::color_print("Error", console::Red, console::BACKGROUND_COLOR);
+		console::print(": failed (");
+		console::print_bytes(expr);
+		console::print(") at line ");
+		//console::print(line.to_str());
+		console::print(" in file ");
+		console::print_bytes(file);
+		zero::abort()
+	}
+}
+
+#[lang="fail_bounds_check"]
+#[fixed_stack_segment]
+pub fn fail_bounds_check(_: *i8, _: uint, _: uint, _: uint) {
+    unsafe {
+        zero::abort()
+    }
+}
+
+// Memory
 
 #[no_mangle]
 pub unsafe fn memcmp(ptr1: *u8, ptr2: *u8, size: uint) -> i32 {

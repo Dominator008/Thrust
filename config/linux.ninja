@@ -43,7 +43,9 @@ rule touch
    description = TOUCH $out
 
 rule genrescue
-   command = grub-mkrescue -o $out $in
+   command = cp thirdparty/grub/grub.img isofiles/boot/grub && $
+             xorriso -as mkisofs -R -b boot/grub/grub.img -no-emul-boot $
+                     -boot-load-size 4 -boot-info-table -o $out $in
    description = GENRESCUE $out
 
 rule qemu

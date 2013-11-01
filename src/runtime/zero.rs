@@ -189,24 +189,6 @@ pub fn log_type<T>(_: u32, _: &T) {
 #[lang="annihilate"]
 pub unsafe fn annihilate() {}
 
-// Failure
-
-#[lang="fail_"]
-#[fixed_stack_segment]
-pub fn fail(_: *i8, _: *i8, _: uint) -> ! {
-    unsafe {
-        abort()
-    }
-}
-
-#[lang="fail_bounds_check"]
-#[fixed_stack_segment]
-pub fn fail_bounds_check(_: *i8, _: uint, _: uint, _: uint) {
-    unsafe {
-        abort()
-    }
-}
-
 // Memory allocation
 
 // FIXME: So grotesquely inefficient.
@@ -233,19 +215,6 @@ pub unsafe fn exchange_malloc(type_desc: *i8, size: uint) -> *i8 {
 #[fixed_stack_segment]
 pub unsafe fn exchange_free(alloc: *i8) {
     free(transmute(alloc))
-}
-
-// Entry point
-
-// TODO(pcwalton): Stash argc and argv somewhere. Probably needs to wait on
-// global variables.
-#[lang="start"]
-pub fn start(main: *u8, _: int, _: **i8, _: *u8) -> int {
-    unsafe {
-        let main: extern "Rust" fn() = transmute(main);
-        main();
-        0
-    }
 }
 
 // The nonexistent garbage collector

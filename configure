@@ -3,6 +3,7 @@
 case `uname -s` in
 	Darwin)
 		OS=darwin
+		tools/gen_binutils.sh || exit 1
 		;;
 	Linux)
 		OS=linux
