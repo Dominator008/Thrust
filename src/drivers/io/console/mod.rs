@@ -148,8 +148,7 @@ fn clear_rem_line(background: Color) {
 		do iter::range(col, MAX_COLUMN) |i| {
 			let pos = rpos + *i;
 			(*SCREEN)[pos].char = ' ' as u8;
-			//FIXME: why does background not work?  Compiler bug?
-			(*SCREEN)[pos].attr = ((/* background */BACKGROUND_COLOR as u8) << 4) + (FOREGROUND_COLOR as u8);
+			(*SCREEN)[pos].attr = ((background as u8) << 4) + (FOREGROUND_COLOR as u8);
 		}
 	}
 }
@@ -161,13 +160,11 @@ fn add_line(background: Color) {
 		row += 1;
 		if row == MAX_ROW {
 			row -= 1;
-			//shift_rows_up();
+			shift_rows_up();
 		}
 	}
 }
 
-// FIXME: why does this cause a triple fault?  Compiler bug?
-// NOTE: all bugs always have to do with the SCREEN.
 fn shift_rows_up() {
 	unsafe {
 		do iter::range(1, MAX_ROW) |r| {

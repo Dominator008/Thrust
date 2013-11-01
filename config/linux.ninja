@@ -1,6 +1,6 @@
 cflags = -O3 -ffreestanding -fno-builtin -nostdlib -nostdinc -nostdinc++ $
    -fcolor-diagnostics -mcmodel=kernel
-rustflags = --opt-level 3 --target x86_64-intel-linux --lib -c
+rustflags = --opt-level=1 --target x86_64-intel-linux --lib -c
 ldflags = -T linker.ld -nodefaultlibs -melf_x86_64 -z max-page-size=0x1000
 asmflags = -f elf64
 
@@ -9,6 +9,7 @@ ld = ld
 cc = clang
 asm = nasm
 qemu = qemu-system-x86_64
+xorriso = xorriso
 
 rule rustc
    command = $rustc $rustflags -o $out $in
@@ -44,7 +45,7 @@ rule touch
 
 rule genrescue
    command = cp thirdparty/grub/grub.img isofiles/boot/grub && $
-             xorriso -as mkisofs -R -b boot/grub/grub.img -no-emul-boot $
+             $xorriso -as mkisofs -R -b boot/grub/grub.img -no-emul-boot $
                      -boot-load-size 4 -boot-info-table -o $out $in
    description = GENRESCUE $out
 
