@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2014 Arcterus@mail.com
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */ 
 #[crate_id = "kRnel#0.0.1"];
 
 #[allow(ctypes)];
@@ -30,7 +37,7 @@ pub mod error;
 #[start]
 pub fn main() {
 	console::clear_screen();
-	console::print("iiiiiiiiiiiiiiiiiiiiiiiiiii\niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\x08\x08\x08\x08\x08test");
+	console::print("iiiiiiiiiiiiiiiiiiiiiiiiiii\niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\x08\x08\x08\x08\x08test");	
 	console::println("");
 	error::panic("End of kernel");
 }

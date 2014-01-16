@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2014 Arcterus@mail.com
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */ 
 // Copyright (c) 2006-2009 Graydon Hoare
 // Copyright (c) 2009-2013 Mozilla Foundation
 
@@ -274,4 +281,3 @@ extern "rust-intrinsic" {
     pub fn transmute<T,U>(val: T) -> U;
     pub fn size_of<T>() -> uint;
 }
-

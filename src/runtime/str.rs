@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2014 Arcterus@mail.com
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */ 
 use super::iter;
 use super::zero::transmute;
 
@@ -43,4 +50,3 @@ pub fn as_buf<T>(s: &str, func: |*u8, uint| -> T) -> T {
 		func(buf, len)
 	}
 }
-
