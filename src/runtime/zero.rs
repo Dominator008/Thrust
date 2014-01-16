@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Arcterus@mail.com
+ * Copyright (c) 2014 Arcterus
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -267,11 +267,8 @@ pub unsafe fn check_not_borrowed(_: *u8, _: *i8, _: uint) {
 // libc dependencies
 
 extern {
-    #[fast_ffi]
     pub fn malloc(size: uint) -> *u8;
-    #[fast_ffi]
     pub fn free(ptr: *u8);
-    #[fast_ffi]
     pub fn abort() -> !;
 }
 

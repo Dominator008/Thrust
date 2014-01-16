@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Arcterus@mail.com
+ * Copyright (c) 2014 Arcterus
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -23,7 +23,6 @@ pub mod str;
 // Failure
 
 #[lang="fail_"]
-#[fixed_stack_segment]
 pub fn fail(expr: *u8, file: *u8, line: uint) -> ! {
 	unsafe {
 		console::color_print("Error", console::Red, console::BACKGROUND_COLOR);
@@ -38,7 +37,6 @@ pub fn fail(expr: *u8, file: *u8, line: uint) -> ! {
 }
 
 #[lang="fail_bounds_check"]
-#[fixed_stack_segment]
 pub fn fail_bounds_check(_: *i8, _: uint, _: uint, _: uint) {
     unsafe {
         zero::abort()
