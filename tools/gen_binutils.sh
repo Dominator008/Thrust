@@ -21,7 +21,7 @@ if [ ! -f install/bin/x86_64-linux-elf-ld ]; then
 	echo "Configure binutils"
 	CC=clang CFLAGS='-Wno-string-plus-int -Wno-empty-body -Wno-self-assign' \
 		./configure --prefix=/ --target=x86_64-linux-elf --enable-ld \
-		--disable-gold || exit 1
+		--disable-gold --disable-werror || exit 1
 	echo "Building binutils"
 	make -j4 || exit 1
 	echo "Installing binutils"

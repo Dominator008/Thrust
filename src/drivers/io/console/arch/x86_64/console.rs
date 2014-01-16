@@ -1,6 +1,3 @@
-#[author = "Arcterus"];
-#[license = "MPL v2.0"];
-
 pub static SCREEN_ADDR: uint = 0xb8000;
 pub static MAX_ROW: uint = 25;
 pub static MAX_COLUMN: uint = 80;

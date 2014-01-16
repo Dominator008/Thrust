@@ -1,10 +1,10 @@
-#[link(name = "kRnel",
-       vers = "0.0.1",
-       author = "Arcterus",
-       license = "MPL v2.0")];
+#[crate_id = "kRnel#0.0.1"];
 
 #[allow(ctypes)];
 #[no_std];
+#[feature(globs)];
+#[feature(asm)];
+
 
 pub use drivers::io::console;
 pub use target::reset::*;
@@ -19,7 +19,7 @@ pub mod runtime;
 
 #[path = "../drivers"]
 mod drivers {
-	mod io {
+	pub mod io {
 		pub mod console;
 	}
 }

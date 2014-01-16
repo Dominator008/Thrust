@@ -1,5 +1,3 @@
-#[author = "Arcterus"];
-#[license = "MPL v2.0"];
 
 pub enum Result<T, U> {
 	Ok(T),

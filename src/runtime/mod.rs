@@ -1,5 +1,3 @@
-#[author = "Arcterus"];
-#[license = "MPL v2.0"];
 
 use self::zero::size_of;
 use super::console;

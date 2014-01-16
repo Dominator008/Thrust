@@ -1,15 +1,12 @@
-#[author = "Arcterus"];
-#[license = "MPL v2.0"];
-
 use super::zero::*;
 use super::num::*;
 
 #[inline]
-pub fn iterate<A: Add<A, A> + Ord + One>(start: A, end: A, it: &fn(elem: &A) -> bool) -> bool {
+pub fn iterate<A: Add<A, A> + Ord + One>(start: A, end: A, it: |&A| -> bool) -> bool {
 	iterate_step(start, end, One::one(), it)
 }
 
-pub fn iterate_step<A: Add<A, A> + Ord + One>(start: A, end: A, step: A, it: &fn(elem: &A) -> bool) -> bool {
+pub fn iterate_step<A: Add<A, A> + Ord + One>(start: A, end: A, step: A, it: |&A| -> bool) -> bool {
 	let mut start = start;
 	while start < end {
 		if !it(&start) {
@@ -21,16 +18,16 @@ pub fn iterate_step<A: Add<A, A> + Ord + One>(start: A, end: A, step: A, it: &fn
 }
 
 #[inline]
-pub fn range<A: Add<A, A> + Ord + One>(start: A, end: A, it: &fn(elem: &A)) {
+pub fn range<A: Add<A, A> + Ord + One>(start: A, end: A, it: |&A| -> () ) {
 	range_step(start, end, One::one(), it);
 }
 
 #[inline]
-pub fn range_inclusive<A: Add<A, A> + Ord + One>(start: A, end: A, it: &fn(elem: &A)) {
+pub fn range_inclusive<A: Add<A, A> + Ord + One>(start: A, end: A, it: |&A| -> () ) {
 	range_step_inclusive(start, end, One::one(), it);
 }
 
-pub fn range_step<A: Add<A, A> + Ord + One>(start: A, end: A, step: A, it: &fn(elem: &A)) {
+pub fn range_step<A: Add<A, A> + Ord + One>(start: A, end: A, step: A, it: |&A| -> () ) {
 	let mut start = start;
 	while start < end {
 		it(&start);
@@ -39,7 +36,7 @@ pub fn range_step<A: Add<A, A> + Ord + One>(start: A, end: A, step: A, it: &fn(e
 }
 
 #[inline]
-pub fn range_step_inclusive<A: Add<A, A> + Ord + One>(start: A, end: A, step: A, it: &fn(elem: &A)) {
+pub fn range_step_inclusive<A: Add<A, A> + Ord + One>(start: A, end: A, step: A, it: |&A| -> () ) {
 	range_step(start, end + One::one(), step, it);
 }
 

@@ -1,6 +1,3 @@
-#[author = "Arcterus"];
-#[license = "MPL v2.0"];
-
 use super::iter;
 use super::num;
 use super::zero;
@@ -32,8 +29,8 @@ impl zero::Ord for uint {
 
 impl num::Times for uint {
 	#[inline]
-	fn times(&self, it: &fn()) {
-		iter::range(0, *self, |_| { it(); });
+	fn times(&self, it: || -> () ) {
+		iter::range(0, *self,|_| { it(); });
 	}
 }
 

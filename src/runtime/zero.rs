@@ -201,7 +201,6 @@ struct Header {
 
 // FIXME: This is horrendously inefficient.
 #[lang="exchange_malloc"]
-#[fixed_stack_segment]
 pub unsafe fn exchange_malloc(type_desc: *i8, size: uint) -> *i8 {
     let alloc: *mut Header = transmute(malloc(size_of::<Header>() + size));
     (*alloc).minus_one = -1;
@@ -212,7 +211,6 @@ pub unsafe fn exchange_malloc(type_desc: *i8, size: uint) -> *i8 {
 }
 
 #[lang="exchange_free"]
-#[fixed_stack_segment]
 pub unsafe fn exchange_free(alloc: *i8) {
     free(transmute(alloc))
 }
@@ -220,49 +218,41 @@ pub unsafe fn exchange_free(alloc: *i8) {
 // The nonexistent garbage collector
 
 #[lang="malloc"]
-#[fixed_stack_segment]
 pub unsafe fn gc_malloc(_: *i8, _: uint) -> *i8 {
     abort()
 }
 
 #[lang="free"]
-#[fixed_stack_segment]
 pub unsafe fn gc_free(_: *i8) {
     abort()
 }
 
 #[lang="borrow_as_imm"]
-#[fixed_stack_segment]
 pub unsafe fn borrow_as_imm(_: *u8, _: *i8, _: uint) -> uint {
     abort()
 }
 
 #[lang="borrow_as_mut"]
-#[fixed_stack_segment]
 pub unsafe fn borrow_as_mut(_: *u8, _: *i8, _: uint) -> uint {
     abort()
 }
 
 #[lang="record_borrow"]
-#[fixed_stack_segment]
 pub unsafe fn record_borrow(_: *u8, _: uint, _: *i8, _: uint) {
     abort()
 }
 
 #[lang="unrecord_borrow"]
-#[fixed_stack_segment]
 pub unsafe fn unrecord_borrow(_: *u8, _: uint, _: *i8, _: uint) {
     abort()
 }
 
 #[lang="return_to_mut"]
-#[fixed_stack_segment]
 pub unsafe fn return_to_mut(_: *u8, _: uint, _: *i8, _: uint) {
     abort()
 }
 
 #[lang="check_not_borrowed"]
-#[fixed_stack_segment]
 pub unsafe fn check_not_borrowed(_: *u8, _: *i8, _: uint) {
     abort()
 }

@@ -1,5 +1,3 @@
-#[author = "Arcterus"];
-#[license = "MPL v2.0"];
 
 pub enum Option<T> {
 	Some(T),

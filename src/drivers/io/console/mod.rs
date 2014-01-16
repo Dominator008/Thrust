@@ -1,5 +1,3 @@
-#[author = "Arcterus"];
-#[license = "MPL v2.0"];
 
 pub use self::target::*;
 use runtime::iter;
@@ -70,10 +68,10 @@ pub fn color_println(msg: &str, foreground: Color, background: Color) {
 
 pub fn color_print(msg: &str, foreground: Color, background: Color) {
 	unsafe {
-		do msg.each_byte() |byte| {
+		msg.each_byte(|byte| {
 			print_byte(byte, foreground, background);
 			true
-		};
+		});
 		move_cursor(row, col);
 	}
 }
@@ -121,9 +119,9 @@ fn print_byte(byte: u8, foreground: Color, background: Color) {
 
 pub fn color_clear_screen(background: Color) {
 	unsafe {
-		do iter::range(0, MAX_ROW) |i| {
+		iter::range(0, MAX_ROW,|i| {
 			clear_line(*i, background);
-		};
+		});
 		row = 0;
 		col = 0;
 		move_cursor(0, 0);
@@ -145,11 +143,11 @@ fn clear_line(_row: uint, background: Color) {
 fn clear_rem_line(background: Color) {
 	unsafe {
 		let rpos = row * MAX_COLUMN;
-		do iter::range(col, MAX_COLUMN) |i| {
+		iter::range(col, MAX_COLUMN, |i| {
 			let pos = rpos + *i;
 			(*SCREEN)[pos].char = ' ' as u8;
 			(*SCREEN)[pos].attr = ((background as u8) << 4) + (FOREGROUND_COLOR as u8);
-		}
+		})
 	}
 }
 
@@ -167,16 +165,16 @@ fn add_line(background: Color) {
 
 fn shift_rows_up() {
 	unsafe {
-		do iter::range(1, MAX_ROW) |r| {
+		iter::range(1, MAX_ROW, |r| {
 			let fposr = *r * MAX_COLUMN;
 			let tposr = fposr - MAX_COLUMN;
-			do iter::range(0, MAX_COLUMN) |c| {
+			iter::range(0, MAX_COLUMN, |c| {
 				let tpos = tposr + *c;
 				let fpos = fposr + *r;
 				(*SCREEN)[tpos].char = (*SCREEN)[fpos].char;
 				(*SCREEN)[tpos].attr = (*SCREEN)[fpos].attr;
-			}
-		}
+			});
+		});
 	}
 	clear_line(MAX_ROW - 1, BACKGROUND_COLOR);
 }
