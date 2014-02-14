@@ -6,15 +6,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */ 
 
-pub use self::target::*;
+pub use self::platform::*;
 use runtime::iter;
 use runtime::iter::Iterator;
 use runtime::option::{Some, None};
 use runtime::slice;
 use runtime::str;
 
-#[path = "arch/target/console.rs"]
-pub mod target;
+#[cfg(target_arch = "x86_64")]
+#[path = "arch/x86_64/mod.rs"]
+pub mod platform;
 
 pub enum Color {
 	Black      = 0,

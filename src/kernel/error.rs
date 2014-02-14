@@ -8,13 +8,13 @@
 
 use super::console;
 
-pub fn panic(reason: &str) {
+pub fn panic(reason: &str) -> ! {
 	console::color_println("Ohs noes!  You've been harpooned!", console::Red, console::BACKGROUND_COLOR);
 	// print fail whale (kraken?)
 	console::print("Reason: ");
 	console::print(reason);
 	// wait 10 seconds
-//	abort();
+	abort();
 }
 
 #[no_mangle]

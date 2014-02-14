@@ -18,7 +18,9 @@ cp config/${OS}.ninja config.ninja
 
 ARCH=`uname -m`
 
-for dir in `find src -name arch`; do
+target_dirs='src/boot'
+
+for dir in $target_dirs; do
 	if [[ ! -e "$dir"/target ]]; then
 		ln -s ${ARCH}/ "$dir"/target
 	fi

@@ -10,7 +10,7 @@ pub static MAX_ROW: uint = 25;
 pub static MAX_COLUMN: uint = 80;
 
 pub fn move_cursor(row: uint, col: uint) {
-	let pos = row * 80 + col;
+	let pos = row * MAX_COLUMN + col;
 	unsafe {
 		asm!("
 			mov al, 0xF

@@ -20,13 +20,11 @@ extern mod runtime = "core";
 pub use runtime::*;
 
 pub use drivers::io::console;
-//pub use target::*;
-pub use target::reset;
+pub use platform::*;
 
-#[path = "arch/target"]
-mod target {
-	pub mod reset;
-}
+#[cfg(target_arch = "x86_64")]
+#[path = "arch/x86_64/mod.rs"]
+pub mod platform;
 
 #[path = "../drivers"]
 mod drivers {

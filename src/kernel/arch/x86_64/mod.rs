@@ -6,9 +6,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */ 
 
+pub mod reset;
+
 #[inline(always)]
-pub unsafe fn immediate_reset() -> ! {
-	asm!("xor %eax, %eax; lidt $0; int3" :: "m" (0 as *u64));
-	loop {}
+#[no_mangle]
+pub unsafe fn __morestack() -> ! {
+	   super::error::panic("cannot use __morestack from the kernel");
 }
 
