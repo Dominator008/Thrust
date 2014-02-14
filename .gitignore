@@ -11,6 +11,7 @@ target
 *.iso
 *.bin
 *.o
+*.bc
 .ninja_deps
 .ninja_log
 isofiles

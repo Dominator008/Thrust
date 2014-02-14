@@ -8,7 +8,10 @@
 
 pub use self::target::*;
 use runtime::iter;
-use runtime::str::*;
+use runtime::iter::Iterator;
+use runtime::option::{Some, None};
+use runtime::slice;
+use runtime::str;
 
 #[path = "arch/target/console.rs"]
 pub mod target;
@@ -75,10 +78,9 @@ pub fn color_println(msg: &str, foreground: Color, background: Color) {
 
 pub fn color_print(msg: &str, foreground: Color, background: Color) {
 	unsafe {
-		msg.each_byte(|byte| {
+		for &byte in slice::iter(str::as_bytes(msg)) {
 			print_byte(byte, foreground, background);
-			true
-		});
+		}
 		move_cursor(row, col);
 	}
 }
@@ -126,9 +128,9 @@ fn print_byte(byte: u8, foreground: Color, background: Color) {
 
 pub fn color_clear_screen(background: Color) {
 	unsafe {
-		iter::range(0, MAX_ROW,|i| {
-			clear_line(*i, background);
-		});
+		for line in iter::range(0, MAX_ROW) {
+			clear_line(line, background);
+		}
 		row = 0;
 		col = 0;
 		move_cursor(0, 0);
@@ -150,11 +152,11 @@ fn clear_line(_row: uint, background: Color) {
 fn clear_rem_line(background: Color) {
 	unsafe {
 		let rpos = row * MAX_COLUMN;
-		iter::range(col, MAX_COLUMN, |i| {
-			let pos = rpos + *i;
+		for i in iter::range(col, MAX_COLUMN) {
+			let pos = rpos + i;
 			(*SCREEN)[pos].char = ' ' as u8;
 			(*SCREEN)[pos].attr = ((background as u8) << 4) + (FOREGROUND_COLOR as u8);
-		})
+		}
 	}
 }
 
@@ -172,16 +174,16 @@ fn add_line(background: Color) {
 
 fn shift_rows_up() {
 	unsafe {
-		iter::range(1, MAX_ROW, |r| {
-			let fposr = *r * MAX_COLUMN;
+		for r in iter::range(1, MAX_ROW) {
+			let fposr = r * MAX_COLUMN;
 			let tposr = fposr - MAX_COLUMN;
-			iter::range(0, MAX_COLUMN, |c| {
-				let tpos = tposr + *c;
-				let fpos = fposr + *r;
+			for c in iter::range(0, MAX_COLUMN) {
+				let tpos = tposr + c;
+				let fpos = fposr + r;
 				(*SCREEN)[tpos].char = (*SCREEN)[fpos].char;
 				(*SCREEN)[tpos].attr = (*SCREEN)[fpos].attr;
-			});
-		});
+			}
+		}
 	}
 	clear_line(MAX_ROW - 1, BACKGROUND_COLOR);
 }

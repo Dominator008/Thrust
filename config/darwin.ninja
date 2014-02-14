@@ -1,6 +1,7 @@
-cflags = -O3 -ffreestanding -fno-builtin -nostdlib -nostdinc -nostdinc++ $
-   -fcolor-diagnostics -mcmodel=kernel
-rustflags = --opt-level 1 --target x86_64-intel-linux --lib -c
+cflags = -O3 -ffreestanding -fno-builtin -nostdlib -nostdinc -fcolor-diagnostics $
+   -mcmodel=kernel -target x86_64-intel-linux -c
+rustlibflags = --opt-level=3 -Z no-landing-pads --target x86_64-intel-linux
+rustflags = $rustlibflags -L src/runtime/ --emit=bc --crate-type=rlib
 ldflags = -T linker.ld -nodefaultlibs -melf_x86_64 -z max-page-size=0x1000
 asmflags = -f elf64
 
@@ -12,8 +13,13 @@ qemu = qemu-system-x86_64
 xorriso = xorriso
 
 rule rustc
-   command = $rustc $rustflags -o $out $in
+   command = $rustc $rustflags -o $out.bc $in && $cc $cflags -o $out $out.bc && $
+             rm $out.bc
    description = RUSTC $out
+
+rule rustc_lib
+   command = $rustc $rustlibflags -o $out $in
+   description = RUSTC_LIB $out
 
 rule cc
    command = $cc $cflags -o $out $in

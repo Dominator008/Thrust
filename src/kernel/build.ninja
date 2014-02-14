@@ -1,4 +1,4 @@
 curdir = src/kernel
 
-build $curdir/main.o: rustc $curdir/main.rs
+build $curdir/main.o: rustc $curdir/main.rs | $curdir/../runtime/libcore-2e829c2f-0.0.rlib
 

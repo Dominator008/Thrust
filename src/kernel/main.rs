@@ -10,23 +10,23 @@
            author = "Arcterus",
            license = "MPL v2.0")];
 
-
 #[allow(ctypes)];
 #[no_std];
 #[feature(globs)];
 #[feature(asm)];
 
+extern mod runtime = "core";
+
+pub use runtime::*;
 
 pub use drivers::io::console;
-pub use target::reset::*;
+//pub use target::*;
+pub use target::reset;
 
 #[path = "arch/target"]
 mod target {
 	pub mod reset;
 }
-
-#[path = "../runtime/mod.rs"]
-pub mod runtime;
 
 #[path = "../drivers"]
 mod drivers {
@@ -36,6 +36,8 @@ mod drivers {
 }
 
 pub mod error;
+
+pub mod support;
 
 #[no_mangle]
 #[start]

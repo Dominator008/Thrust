@@ -6,7 +6,7 @@ A small 64-bit, Multiboot kernel written in Rust.
 #### Build ####
 * `clang` (capable of cross-compiling for x86-64)
 * `nasm`
-* `rust` (0.8)
+* `rust` (from git)
 * `ninja`
 * `xorriso`
 
@@ -47,7 +47,7 @@ $ ninja run
 ```
 
 ## Legal ##
-Copyright (C) 2013 Arcterus.
+Copyright (C) 2014 Arcterus.
 All rights reserved.
 
 See License.txt for description of this project's license.

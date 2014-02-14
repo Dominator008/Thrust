@@ -2,10 +2,18 @@ curdir = src
 
 subninja $curdir/boot/build.ninja
 subninja $curdir/kernel/build.ninja
-subninja $curdir/runtime/build.ninja
+
+build $curdir/runtime/libcore-2e829c2f-0.0.rlib: rustc_lib $curdir/runtime/core/lib.rs
+
+build $curdir/runtime/support.o: rustc $curdir/runtime/support.rs
+   rustflags = $rustflags -C passes=inline
 
 build kernel.bin: ld $curdir/boot/arch/target/setup.o $
-                     $curdir/runtime/arch/target/runtime.o $
-                     $curdir/kernel/main.o
+                     $curdir/runtime/support.o $
+                     $curdir/kernel/main.o $
+                     "-(" $curdir/runtime/libcore-2e829c2f-0.0.rlib "-)"
+
+#build '-($curdir/runtime/libcore-2e829c2f-0.0.rlib-)': phony $curdir/runtime/libcore-2e829c2f-0.0.rlib
+build "-(" "-)": phony
 
 default kernel.bin

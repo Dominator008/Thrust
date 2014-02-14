@@ -14,5 +14,11 @@ pub fn panic(reason: &str) {
 	console::print("Reason: ");
 	console::print(reason);
 	// wait 10 seconds
-	//unsafe { super::immediate_reset(); }
+//	abort();
+}
+
+#[no_mangle]
+#[inline(always)]
+pub fn abort() -> ! {
+	unsafe { super::reset::immediate_reset(); }
 }

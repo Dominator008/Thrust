@@ -1,4 +1,0 @@
-curdir = src/runtime
-
-subninja $curdir/arch/target/build.ninja
-
