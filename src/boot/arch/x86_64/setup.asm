@@ -14,7 +14,9 @@ MbHdr:
 	dd 0xE85250D6
 	dd 0
 	dd HdrEnd - MbHdr
-	dd -(0xE85250D6 + 0 + (HdrEnd - MbHdr))
+	dq -(0xE85250D6 + 0 + (HdrEnd - MbHdr))
+
+align 8
 
 AddrTag:
 	dw 2
@@ -37,23 +39,23 @@ EntryTagEnd:
 
 align 8
 
-;FlagsTag:
-;	dw 4
-;	dw 0
-;	dd FlagsTagEnd - FlagsTag
-;	dd (1 << 0)
-;FlagsTagEnd:
+FlagsTag:
+	dw 4
+	dw 0
+	dd FlagsTagEnd - FlagsTag
+	dd (1 << 0)
+FlagsTagEnd:
 
 align 8
 
-;FrmBufTag:
-;	dw 5
-;	dw 0
-;	dd FrmBufTagEnd - FrmBufTag
-;	dd 80
-;	dd 25
-;	dd 0
-;FrmBufTagEnd:
+FrmBufTag:
+	dw 5
+	dw 0
+	dd FrmBufTagEnd - FrmBufTag
+	dd 80
+	dd 25
+	dd 0
+FrmBufTagEnd:
 
 align 8
 
@@ -104,8 +106,7 @@ use64
 
 	mov [gs:0x30], dword 0
 
-	mov rax, main
-	call rax
+	call main
 
 	cli
 	jmp $
