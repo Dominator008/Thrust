@@ -14,6 +14,8 @@ case `uname -s` in
 		;;
 esac
 
+git submodule update --init
+
 cp config/${OS}.ninja config.ninja
 
 ARCH=`uname -m`
@@ -22,7 +24,7 @@ target_dirs='src/boot'
 
 for dir in $target_dirs; do
 	if [[ ! -e "$dir"/target ]]; then
-		ln -s ${ARCH}/ "$dir"/target
+		ln -s arch/${ARCH}/ "$dir"/target
 	fi
 done
 

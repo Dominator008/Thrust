@@ -4,18 +4,19 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- */ 
-#[crate_id(name = "kRnel",
+ */
+
+#![crate_id(name = "kRnel",
            vers = "0.0.1",
            author = "Arcterus",
-           license = "MPL v2.0")];
+           license = "MPL v2.0")]
 
-#[allow(ctypes)];
-#[no_std];
-#[feature(globs)];
-#[feature(asm)];
+#![allow(ctypes)]
+#![no_std]
+#![feature(globs)]
+#![feature(asm)]
 
-extern mod runtime = "core";
+extern crate runtime = "core";
 
 pub use runtime::*;
 
