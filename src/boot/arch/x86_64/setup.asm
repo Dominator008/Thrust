@@ -1,3 +1,29 @@
+%macro gdt_entry 3
+	dq (((%1) << 32) & 0xFF00000000000000) | \
+	   (((%3) << 40) & 0x00F0FF0000000000) | \
+	   (((%2) << 32) & 0x000F000000000000) | \
+	   (((%1) << 8)  & 0x000000FF00000000) | \
+	   (((%1) << 16) & 0x00000000FFFF0000) | \
+	   ((%2)         & 0x000000000000FFFF)
+%endmacro
+
+%define GRANULARITY_BIT(val) (val << 15)
+%define SIZE_BIT(val)        (val << 14)
+%define LONG_BIT(val)        (val << 13)
+
+%define PRESENT_BIT(val)     (val << 7)
+%define PRIVILEGE_BITS(val)  (val << 5)
+%define EXECUTABLE_BIT(val)  (val << 3)
+%define DIRECTION_BIT(val)   (val << 2)
+%define CONFORMING_BIT(val)  DIRECTION_BIT(val)
+%define READABLE_BIT(val)    (val << 1)
+%define WRITABLE_BIT(val)    READABLE_BIT(val)
+%define ACCESSED_BIT(val)    (val)
+
+%define ACCESS_FIELD(vals)   ((vals) | (1 << 4))
+
+%define NULL_GDT_ENTRY gdt_entry 0, 0, 0
+
 use32
 
 [global start]
@@ -151,12 +177,17 @@ setup_paging_and_long_mode:
 	ret
 
 TmpGdt:
-	dq 0x0000000000000000
-	dq 0x00CF9A000000FFFF
-	dq 0x00CF92000000FFFF
-	dq 0x0000000000000000
-	dq 0x00A09A0000000000
-	dq 0x00A0920000000000
+	NULL_GDT_ENTRY
+	gdt_entry 0, 0xFFFFF, ACCESS_FIELD(GRANULARITY_BIT(1) | SIZE_BIT(1) | \
+	                                   PRESENT_BIT(1) | EXECUTABLE_BIT(1) | \
+	                                   READABLE_BIT(1))
+	gdt_entry 0, 0xFFFFF, ACCESS_FIELD(GRANULARITY_BIT(1) | SIZE_BIT(1) | \
+	                                   PRESENT_BIT(1) | READABLE_BIT(1))
+	NULL_GDT_ENTRY
+	gdt_entry 0, 0, ACCESS_FIELD(SIZE_BIT(1) | LONG_BIT(1) | PRESENT_BIT(1) | \
+	                             EXECUTABLE_BIT(1) | READABLE_BIT(1))
+	gdt_entry 0, 0, ACCESS_FIELD(SIZE_BIT(1) | LONG_BIT(1) | PRESENT_BIT(1) | \
+	                             READABLE_BIT(1))
 
 Gdtr1:
 	dw 23

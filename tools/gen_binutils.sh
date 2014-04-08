@@ -25,5 +25,5 @@ if [ ! -f install/bin/x86_64-linux-elf-ld ]; then
 	echo "Building binutils"
 	make -j4 || exit 1
 	echo "Installing binutils"
-	make DESTDIR=$PWD/../install install || exit 1
+	make DESTDIR="$PWD"/../install install || exit 1
 fi
