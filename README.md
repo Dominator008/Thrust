@@ -23,8 +23,8 @@ A small 64-bit, Multiboot kernel written in Rust.
 Some distributions have compilers that will work just fine out-of-the-box, while some don't.
 
 ```bash
-$ sudo yaourt -S clang nasm qemu rust ninja libisoburn
-$ cd path/to/rustboot
+$ sudo yaourt -S clang nasm qemu rust-git ninja libisoburn
+$ cd path/to/kRnel
 $ ./configure
 $ ninja
 ```
@@ -35,8 +35,9 @@ autogenerates `binutils` for you because OSX has a broken version by default.
 Please note that this assumes you already have `clang` installed via Xcode.
 
 ```bash
-$ brew install nasm qemu ninja rust xorriso
-$ cd path/to/rustboot
+$ brew install nasm qemu ninja xorriso
+$ brew install --HEAD rust
+$ cd path/to/kRnel
 $ ./configure
 $ ninja
 ```
