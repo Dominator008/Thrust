@@ -4,14 +4,13 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- */ 
+ */
 
 pub use self::platform::*;
-use runtime::iter;
-use runtime::iter::Iterator;
-use runtime::option::{Some, None};
-use runtime::slice;
-use runtime::str;
+use core::iter;
+use core::iter::Iterator;
+use core::option::{Some, None};
+use core::str::StrSlice;
 
 #[cfg(target_arch = "x86_64")]
 #[path = "arch/x86_64/mod.rs"]
@@ -79,7 +78,7 @@ pub fn color_println(msg: &str, foreground: Color, background: Color) {
 
 pub fn color_print(msg: &str, foreground: Color, background: Color) {
 	unsafe {
-		for &byte in slice::iter(str::as_bytes(msg)) {
+		for byte in msg.bytes() {
 			print_byte(byte, foreground, background);
 		}
 		move_cursor(row, col);

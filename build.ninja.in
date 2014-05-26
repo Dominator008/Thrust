@@ -2,20 +2,14 @@ include config.ninja
 
 @SUBNINJAS@
 
-# RUST-CORE
-build src/runtime/libcore-2e829c2f-0.0.rlib: rustc_lib src/runtime/core/lib.rs
-
-build src/runtime/support.o: rustc src/runtime/support.rs
-   rustflags = $rustflags -C passes=inline
-
 # KERNEL MAIN
-build src/kernel/main.o: rustc src/kernel/main.rs | src/runtime/libcore-2e829c2f-0.0.rlib @DEPENDS@
+build src/kernel/main.o: rustc src/kernel/main.rs | @DEPENDS@
 
 # KERNEL BINARY
 build kernel.bin: ld src/boot/target/setup.o $
-                     src/runtime/support.o $
                      src/kernel/main.o $
-                     "-(" src/runtime/libcore-2e829c2f-0.0.rlib "-)"
+                     "-(" install/libcore-c5ed6fb4-0.11.0-pre.rlib "-)" $
+                     "-(" install/librlibc-d1ece24e-0.11.0-pre.rlib "-)"
 
 build "-(" "-)": phony
 

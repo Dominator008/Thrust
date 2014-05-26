@@ -16,9 +16,10 @@
 #![feature(globs)]
 #![feature(asm)]
 
-extern crate runtime = "core";
+extern crate core;
+extern crate rlibc;
 
-pub use runtime::*;
+pub use core::*;
 
 pub use drivers::io::console;
 pub use platform::*;
@@ -35,9 +36,9 @@ pub mod drivers {
 }
 
 pub mod error;
+pub mod support;
 
 #[no_mangle]
-#[start]
 pub fn main() {
 	console::clear_screen();
 	console::print("iiiiiiiiiiiiiiiiiiiiiiiiiii\niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\x08\x08\x08\x08\x08test");

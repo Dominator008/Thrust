@@ -1,10 +1,12 @@
 # tools generated
 /binutils*
+/rust*
 /grub*
 /install
 
 # configure generated
-config.ninja
+/build.ninja
+/config.ninja
 target
 
 # build generated

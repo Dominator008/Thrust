@@ -20,6 +20,8 @@ case "`uname -s`" in
 		;;
 esac
 
+tools/gen_rust.sh || exit 1
+
 git submodule update --init
 
 cp config/${OS}.ninja config.ninja

@@ -22,3 +22,8 @@ pub fn panic(reason: &str) -> ! {
 pub fn abort() -> ! {
 	unsafe { super::reset::immediate_reset(); }
 }
+
+#[no_mangle]
+pub fn rust_begin_unwind(_: &::core::fmt::Arguments, file: &'static str, _: uint) -> ! {
+	panic(file);
+}
