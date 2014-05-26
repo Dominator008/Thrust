@@ -1,0 +1,36 @@
+include config.ninja
+
+@SUBNINJAS@
+
+# RUST-CORE
+build src/runtime/libcore-2e829c2f-0.0.rlib: rustc_lib src/runtime/core/lib.rs
+
+build src/runtime/support.o: rustc src/runtime/support.rs
+   rustflags = $rustflags -C passes=inline
+
+# KERNEL MAIN
+build src/kernel/main.o: rustc src/kernel/main.rs | src/runtime/libcore-2e829c2f-0.0.rlib @DEPENDS@
+
+# KERNEL BINARY
+build kernel.bin: ld src/boot/target/setup.o $
+                     src/runtime/support.o $
+                     src/kernel/main.o $
+                     "-(" src/runtime/libcore-2e829c2f-0.0.rlib "-)"
+
+build "-(" "-)": phony
+
+# COMMANDS
+build run: qemu kRnel.iso
+
+# KERNEL ISO GENERATION
+build isofiles: mkdir
+build isofiles/boot isofiles/grub: mkdir | isofiles
+build isofiles/boot/grub: mkdir | isofiles/boot
+build isofiles/boot/grub/grub.cfg: cp thirdparty/grub/grub.cfg | isofiles/boot/grub
+build isofiles/boot/kernel.bin: cp kernel.bin | isofiles/boot
+build isofiles/boot/grub/stage2: touch
+build kRnel.iso: genrescue isofiles | isofiles/boot/grub/grub.cfg $
+                                      isofiles/boot/kernel.bin $
+                                      isofiles/boot/grub/stage2
+
+default kRnel.iso
