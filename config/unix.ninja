@@ -41,10 +41,6 @@ rule cp
    command = cp -r $in $out
    description = CP $out
 
-rule mkdir
-   command = mkdir -p $out
-   description = MKDIR $out
-
 rule touch
    command = touch $out
    description = TOUCH $out

@@ -48,3 +48,4 @@ sed -i '' "s:@ARCH@:$ARCH:g" build.ninja
 perl -p -e "s:\@SUBNINJAS\@:$subninjas:g" build.ninja > build.ninja.tmp
 mv build.ninja.tmp build.ninja
 
+mkdir -p isofiles/boot/grub
