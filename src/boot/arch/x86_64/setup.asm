@@ -236,4 +236,3 @@ Gdtr3:
 MemMap:
 	dd 0
 
-/* vim: set ts=3 sw=3 tw=0 noet :*/
