@@ -56,6 +56,15 @@ AddrTagEnd:
 
 align 8
 
+MbiTag:
+	dw 1
+	dw 0
+	dd MbiTagEnd - MbiTag
+	dd 6
+MbiTagEnd:
+
+align 8
+
 EntryTag:
 	dw 3
 	dw 0
@@ -95,6 +104,26 @@ HdrEnd:
 [section .boot]
 [extern Stack]
 start:
+	cmp eax, 0x36d76289  ; if this matches, we're good
+	jne $
+	mov ecx, ebx         ; save a copy in case we need it later
+	mov edx, [ebx]       ; size of multiboot structure
+	add edx, ebx         ; maximum address for multiboot structure
+	add ebx, 8           ; total_size and reserved are both u32
+.find_mem_map:
+	cmp ebx, edx         ; if equal, we don't know how much memory
+	jge $
+	cmp DWORD [ebx], 6   ; check if we've found the memory map
+	je .found_mem_map
+	mov eax, [ebx + 4]
+	add eax, 7
+	and eax, ~7
+	add ebx, eax
+	jmp .find_mem_map
+.found_mem_map:         ; yay, memory map found :)
+	mov [MemMap], ebx    ; found memory map, so store location for parsing
+
+.load_gdt1:
 	mov eax, Gdtr1
 	lgdt [eax]
 
@@ -131,6 +160,8 @@ use64
 	lgdt [rax]
 
 	mov [gs:0x30], dword 0
+
+	mov rdi, [MemMap]
 
 	call main
 
@@ -201,3 +232,8 @@ Gdtr2:
 Gdtr3:
 	dw 23
 	dq TmpGdt + 24 + 0xFFFFFFFF80000000
+
+MemMap:
+	dd 0
+
+/* vim: set ts=3 sw=3 tw=0 noet :*/

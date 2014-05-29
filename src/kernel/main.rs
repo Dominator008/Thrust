@@ -19,7 +19,7 @@
 extern crate core;
 extern crate rlibc;
 
-pub use core::*;
+pub use core::prelude::*;
 
 pub use drivers::io::console;
 pub use platform::*;
@@ -35,13 +35,22 @@ pub mod drivers {
 	}
 }
 
+pub mod memory;
 pub mod error;
 pub mod support;
 
 #[no_mangle]
-pub fn main() {
+pub fn main(mem: *memory::BootMemMap) {
+	let mem: &memory::BootMemMap = unsafe { &(*mem) };
 	console::clear_screen();
 	console::print("iiiiiiiiiiiiiiiiiiiiiiiiiii\niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\x08\x08\x08\x08\x08test");
 	console::println("");
+	let usable = mem.usable();
+	let mut len = usable.len();
+	while len > 0 {
+		unsafe { console::print_bytes([(len % 10 + '0' as uint) as u8, 0].as_ptr()); }
+		len /= 10;
+		console::println("");
+	}
 	//error::panic("End of kernel");
 }
