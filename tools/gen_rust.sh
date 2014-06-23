@@ -29,15 +29,16 @@ fi
 mkdir -p install
 if [[ "`ls install | grep libcore`" == "" || "`ls install | grep librlibc`" == "" ]]; then
 	echo "Installing libcore and librlibc"
-	mv rust/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore*.rlib install/
+	mv rust/lib/rustlib/x86_64-unknown-linux-gnu/lib/rustlib/libcore*.rlib install/
 	mv rust/lib/rustlib/x86_64-unknown-linux/gnu/lib/librlibc*.rlib install/
 fi
 if [[ ! -f install/bin/rustc ]]; then
 	cd rust-nightly
 	echo "Configure rust"
-	CC=clang ./configure --prefix=/ || exit 1
+	#CC=clang ./configure --prefix=/ || exit 1
+	CC=gcc CXX=g++ ./configure --prefix=/ || exit 1
 	echo "Building rust"
-	make -j4 || exit 1
+	make -j32 || exit 1
 	echo "Installing rust"
 	make DESTDIR="$PWD"/../install install || exit 1
 fi
