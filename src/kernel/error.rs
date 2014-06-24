@@ -9,21 +9,21 @@
 use super::console;
 
 pub fn panic(reason: &str) -> ! {
-	console::color_println("Ohs noes!  You've been harpooned!", console::Red, console::BACKGROUND_COLOR);
-	// print fail whale (kraken?)
-	console::print("Reason: ");
-	console::print(reason);
-	// wait 10 seconds
-	abort();
+  console::color_println("Ohs noes!  You've been harpooned!", console::Red, console::BACKGROUND_COLOR);
+  // print fail whale (kraken?)
+  console::print("Reason: ");
+  console::print(reason);
+  // wait 10 seconds
+  abort();
 }
 
 #[no_mangle]
 #[inline(always)]
 pub fn abort() -> ! {
-	unsafe { super::reset::immediate_reset(); }
+  unsafe { super::reset::immediate_reset(); }
 }
 
 #[no_mangle]
 pub fn rust_begin_unwind(_: &::core::fmt::Arguments, file: &'static str, _: uint) -> ! {
-	panic(file);
+  panic(file);
 }

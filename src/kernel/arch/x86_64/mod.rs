@@ -11,6 +11,5 @@ pub mod reset;
 #[inline(always)]
 #[no_mangle]
 pub unsafe fn __morestack() -> ! {
-	super::error::panic("cannot use __morestack from the kernel");
+  super::error::panic("cannot use __morestack from the kernel");
 }
-

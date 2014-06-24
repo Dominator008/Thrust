@@ -30,9 +30,9 @@ pub mod platform;
 
 #[path = "../drivers"]
 pub mod drivers {
-	pub mod io {
-		pub mod console;
-	}
+  pub mod io {
+    pub mod console;
+  }
 }
 
 pub mod memory;
@@ -41,16 +41,17 @@ pub mod support;
 
 #[no_mangle]
 pub fn main(mem: *memory::BootMemMap) {
-	let mem: &memory::BootMemMap = unsafe { &(*mem) };
-	console::clear_screen();
-	console::print("iiiiiiiiiiiiiiiiiiiiiiiiiii\niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\x08\x08\x08\x08\x08test");
-	console::println("");
-	let usable = mem.usable();
-	let mut len = usable.len();
-	while len > 0 {
-		unsafe { console::print_bytes([(len % 10 + '0' as uint) as u8, 0].as_ptr()); }
-		len /= 10;
-		console::println("");
-	}
-	//error::panic("End of kernel");
+  let mem: &memory::BootMemMap = unsafe { &(*mem) };
+  console::clear_screen();
+  console::print("iiiiiiiiiiiiiiiiiiiiiiiiiii\niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\x08\x08\x08\x08\x08test");
+  console::println("");
+  let usable = mem.usable();
+  let mut len = usable.len();
+  while len > 0 {
+    console::print("here " + len);
+    unsafe { console::print_bytes([(len % 10 + '0' as uint) as u8, 0].as_ptr()); }
+    len /= 10;
+    console::println("");
+  }
+  //error::panic("End of kernel");
 }

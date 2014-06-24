@@ -3,21 +3,21 @@
 AVAIL_ARCHS='x86_64'
 
 if [[ $ARCH == '' ]]; then
-	ARCH="`uname -m`"
+  ARCH="`uname -m`"
 fi
 
 case "`uname -s`" in
-	Darwin)
-		OS=darwin
-		tools/gen_binutils.sh || exit 1
-		;;
-	Linux)
-		OS=linux
-		;;
-	*)
-		echo "Unsupported OS: `uname -s`" >&2
-		exit 1
-		;;
+  Darwin)
+    OS=darwin
+    tools/gen_binutils.sh || exit 1
+    ;;
+  Linux)
+    OS=linux
+    ;;
+  *)
+    echo "Unsupported OS: `uname -s`" >&2
+    exit 1
+    ;;
 esac
 
 #tools/gen_rust.sh || exit 1
@@ -28,19 +28,19 @@ cp config/${OS}.ninja config.ninja
 
 find_str="-path 'src/runtime*' -or -path 'src/*/target/*'"
 for arch in $AVAIL_ARCHS; do
-	if [[ $arch != $ARCH ]]; then
-		find_str="$find_str -or -path 'src/*/arch/$arch/*'"
-	fi
+  if [[ $arch != $ARCH ]]; then
+    find_str="$find_str -or -path 'src/*/arch/$arch/*'"
+  fi
 done
 
 deps=''
 for file in `eval find -L src ! \\\\\( $find_str \\\\\) -name '*.rs' -type f -print`; do
-	deps="$deps $file"
+  deps="$deps $file"
 done
 
 subninjas=''
 for file in `eval find -L src ! \\\\\( $find_str \\\\\) -name 'build.ninja' -type f -print`; do
-	subninjas="$subninjas\nsubninja $file"
+  subninjas="$subninjas\nsubninja $file"
 done
 
 sed -e "s:@DEPENDS@:$deps:g" build.ninja.in > build.ninja
