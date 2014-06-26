@@ -35,9 +35,14 @@ pub mod drivers {
   }
 }
 
+pub mod kbd;
+pub mod idt;
+pub mod stdio;
 pub mod memory;
 pub mod error;
 pub mod support;
+pub mod pic;
+pub mod io;
 
 #[no_mangle]
 pub fn main(mem: *memory::BootMemMap) {
@@ -45,10 +50,12 @@ pub fn main(mem: *memory::BootMemMap) {
   console::clear_screen();
   console::print("iiiiiiiiiiiiiiiiiiiiiiiiiii\niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\x08\x08\x08\x08\x08test");
   console::println("");
+
+  unsafe { idt::install_idt(); }
+
   let usable = mem.usable();
   let mut len = usable.len();
   while len > 0 {
-    console::print("here " + len);
     unsafe { console::print_bytes([(len % 10 + '0' as uint) as u8, 0].as_ptr()); }
     len /= 10;
     console::println("");
