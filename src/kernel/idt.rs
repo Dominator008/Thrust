@@ -1,43 +1,53 @@
-use pic::PIC_remap;
+use pic::pic_remap;
 use io::outb;
+
+use drivers::io::console;
 
 /* Defines an IDT entry */
 #[packed]
-struct IDTEntry {
+pub struct IDTEntry {
   base_lo: u16,
   sel: u16,        /* Our kernel segment goes here! */
-  zero: u8,        /* This will ALWAYS be set to 0! */
+  zero_0: u8,      /* This will ALWAYS be set to 0! */
   flags: u8,       /* Set using the above table! */
-  base_hi: u16
+  base_mid: u16,
+  base_hi: u32,
+  zero_1: u32
 }
 
 /* Defines an IDT pointer */
 #[packed]
-struct IDTPointer {
+pub struct IDTPointer {
   limit: u16,
-  base: u32
+  base: u64
 }
 
-/* Declare an IDT of 256 entries. If any undefined IDT entry is hit,
+/**
+ * Declare an IDT of 256 entries. If any undefined IDT entry is hit,
  * it normally will cause an "Unhandled Interrupt" exception. Any
  * descriptor for which the 'presence' bit is cleared (0) will generate
- * an "Unhandled Interrupt" exception */
-
+ * an "Unhandled Interrupt" exception.
+ */
 #[no_mangle]
-pub static mut idt: [IDTEntry, ..256] = [IDTEntry {base_lo: 0, sel: 0, zero: 0, flags: 0, base_hi: 0}, ..256];
+pub static mut idt: [IDTEntry, ..256] = [IDTEntry {
+    base_lo: 0, sel: 0, zero_0: 0, flags: 0, base_mid: 0, base_hi: 0, zero_1: 0
+}, ..256];
 
 #[no_mangle]
 pub static mut idtp: IDTPointer = IDTPointer {limit: 0, base: 0};
 
-/* Use this function to set an entry in the IDT. A lot simpler
-*  than twiddling with the GDT ;) */
+/**
+ * Use this function to set an entry in the IDT. A lot simpler
+ * than twiddling with the GDT ;)
+ */
 #[no_mangle]
 fn idt_set_gate(num: u8, f: unsafe extern "C" fn(), sel: u16, flags: u8) {
   unsafe {
-    let base = f as u32;
+    let base = f as u64;
         idt[num as uint].sel = sel;
         idt[num as uint].flags = flags;
-        idt[num as uint].base_hi = (base >> 16) as u16;
+        idt[num as uint].base_hi = (base >> 32) as u32;
+        idt[num as uint].base_mid = ((base >> 16) & ((1 << 16) - 1)) as u16;
         idt[num as uint].base_lo = (base & ((1 << 16) - 1)) as u16;
   }
 }
@@ -51,18 +61,24 @@ extern {
 pub unsafe fn install_idt() {
   /* Sets the special IDT pointer up  */
   idtp.limit = ((super::core::mem::size_of::<IDTEntry>() * 256) - 1) as u16;
-  idtp.base = &idt as *[IDTEntry, ..256] as u32;
+  idtp.base = &idt as *[IDTEntry, ..256] as u64;
 
   /* Add any new ISRs to the IDT here using idt_set_gate */
+  idt_set_gate(32, int_handler_kbd_wrapper, 0x08, 0x8E);
+  idt_set_gate(34, int_handler_kbd_wrapper, 0x08, 0x8E);
+  idt_set_gate(35, int_handler_kbd_wrapper, 0x08, 0x8E);
+  idt_set_gate(36, int_handler_kbd_wrapper, 0x08, 0x8E);
+  idt_set_gate(37, int_handler_kbd_wrapper, 0x08, 0x8E);
   idt_set_gate(33, int_handler_kbd_wrapper, 0x08, 0x8E);
 
   /* Remap the PIC */
-  PIC_remap();
+  pic_remap();
 
   outb(0x21, 0xfd); // Keyboard interrupts only
   outb(0xa1, 0xff);
 
   /* Turn interrupts on */
-  asm!("lidt ($0)" :: "r" (idtp));
+  asm!("lidtq ($0)" :: "r" (idtp));
   asm!("sti");
+  asm!("int $$1");
 }

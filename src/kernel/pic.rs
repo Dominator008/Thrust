@@ -20,7 +20,7 @@ static REMAP_BASE :u8 = 0x20;
  * offset1 - vector offset for master PIC, vectors on the master become offset1..offset1 + 7
  * offset2 - same for slave PIC: offset2..offset2 + 7
  */
-pub unsafe fn PIC_remap() {
+pub unsafe fn pic_remap() {
   outb(PIC1_COMMAND, ICW1_INIT+ICW1_ICW4); // starts the initialization sequence (in cascade mode)
   outb(PIC2_COMMAND, ICW1_INIT+ICW1_ICW4);
   outb(PIC1_DATA, REMAP_BASE);             // ICW2: Master PIC vector offset

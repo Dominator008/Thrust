@@ -2,6 +2,8 @@ use io::{outb, inb};
 use core::option::{Option, Some, None};
 use stdio;
 
+use drivers::io::console;
+
 static mut shifted: bool = false;
 
 // Length: 89
@@ -21,6 +23,8 @@ pub unsafe fn _interrupt_handler_kbd() {
     Some(c) => stdio::putc(c)
   }
   outb(0x20, 0x20);
+  console::println("3");
+  loop {}
 }
 
 pub fn change_state(scancode: u8) {

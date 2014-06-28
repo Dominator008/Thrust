@@ -235,4 +235,3 @@ Gdtr3:
 
 MemMap:
   dd 0
-

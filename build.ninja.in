@@ -4,6 +4,7 @@ include config.ninja
 
 # KERNEL ASSEMBLY
 build src/kernel/isr_wrapper.o: asm src/kernel/isr_wrapper.asm
+build src/kernel/gdt.o: asm src/kernel/gdt.asm
 
 # KERNEL MAIN
 build src/kernel/main.o: rustc src/kernel/main.rs |  src/drivers/io/console/mod.rs src/drivers/io/console/arch/x86_64/mod.rs src/kernel/memory/mod.rs src/kernel/memory/arch/x86_64/mod.rs src/kernel/error.rs src/kernel/arch/x86_64/mod.rs src/kernel/arch/x86_64/reset.rs src/kernel/support.rs src/kernel/main.rs
@@ -12,6 +13,7 @@ build src/kernel/main.o: rustc src/kernel/main.rs |  src/drivers/io/console/mod.
 build kernel.bin: ld src/boot/arch/@ARCH@/setup.o $
                      src/kernel/main.o $
                      src/kernel/isr_wrapper.o $
+                     src/kernel/gdt.o $
                      "-(" /usr/local/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore-c5ed6fb4-0.11.0-pre.rlib "-)" $
                      "-(" /usr/local/lib/rustlib/x86_64-unknown-linux-gnu/lib/librlibc-d1ece24e-0.11.0-pre.rlib "-)"
 
