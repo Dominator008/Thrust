@@ -20,14 +20,14 @@ build kernel.bin: ld src/boot/arch/@ARCH@/setup.o $
 build "-(" "-)": phony
 
 # COMMANDS
-build run: qemu kRnel.iso
+build run: qemu Thrust.iso
 
 # KERNEL ISO GENERATION
 build isofiles/boot/grub/grub.cfg: cp thirdparty/grub/grub.cfg | isofiles/boot/grub
 build isofiles/boot/kernel.bin: cp kernel.bin | isofiles/boot
 build isofiles/boot/grub/stage2: touch
-build kRnel.iso: genrescue isofiles | isofiles/boot/grub/grub.cfg $
+build Thrust.iso: genrescue isofiles | isofiles/boot/grub/grub.cfg $
                                       isofiles/boot/kernel.bin $
                                       isofiles/boot/grub/stage2
 
-default kRnel.iso
+default Thrust.iso

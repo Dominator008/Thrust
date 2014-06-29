@@ -1,6 +1,6 @@
 romimage: file=/usr/local/share/bochs/BIOS-bochs-latest
 vgaromimage: file=/usr/local/share/bochs/VGABIOS-lgpl-latest
 megs: 256 
-ata1-slave: type=cdrom, path="kRnel.iso", status=inserted
+ata1-slave: type=cdrom, path="Thrust.iso", status=inserted
 boot: cdrom
 cpu: count=1, reset_on_triple_fault=0

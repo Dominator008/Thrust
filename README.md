@@ -1,6 +1,6 @@
-# kRnel #
+# Thrust #
 
-A small 64-bit, Multiboot kernel written in Rust.
+A small 64-bit, Multiboot 1.6 compliant kernel written in Rust and assembly.
 
 ## Dependencies ##
 #### Build ####
@@ -11,7 +11,7 @@ A small 64-bit, Multiboot kernel written in Rust.
 * `xorriso`
 
 #### Runtime ####
-* a Multiboot-compliant bootloader
+* A Multiboot 1.6 compliant bootloader (GRUB 2)
 
 #### Emulation ####
 * `qemu`
@@ -23,8 +23,7 @@ A small 64-bit, Multiboot kernel written in Rust.
 Some distributions have compilers that will work just fine out-of-the-box, while some don't.
 
 ```bash
-$ sudo yaourt -S clang nasm qemu rust-git ninja libisoburn
-$ cd path/to/kRnel
+$ cd path/to/Thrust
 $ ./configure
 $ ninja
 ```
@@ -37,7 +36,7 @@ Please note that this assumes you already have `clang` installed via Xcode.
 ```bash
 $ brew install nasm qemu ninja xorriso
 $ brew install --HEAD rust
-$ cd path/to/kRnel
+$ cd path/to/Thrust
 $ ./configure
 $ ninja
 ```
@@ -48,7 +47,7 @@ $ ninja run
 ```
 
 ## Legal ##
-Copyright (C) 2014 Arcterus.
+Copyright (C) 2014 Dominator008.
 All rights reserved.
 
 See License.txt for description of this project's license.
