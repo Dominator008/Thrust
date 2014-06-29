@@ -28,7 +28,7 @@ use32
 
 [global start]
 
-[extern main]
+[extern kmain]
 
 [section .mbhdr]
 [extern _loadStart]
@@ -163,7 +163,7 @@ use64
 
   mov rdi, [MemMap]
 
-  call main
+  call kmain
 
   cli
   jmp $

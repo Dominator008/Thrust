@@ -46,7 +46,7 @@ pub mod pic;
 pub mod io;
 
 #[no_mangle]
-pub fn main(mem: *memory::BootMemMap) {
+pub fn kmain(mem: *memory::BootMemMap) {
   let mem: &memory::BootMemMap = unsafe { &(*mem) };
   console::clear_screen();
   console::print("iiiiiiiiiiiiiiiiiiiiiiiiiii\niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\x08\x08\x08\x08\x08test");
