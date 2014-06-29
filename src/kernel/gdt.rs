@@ -58,25 +58,24 @@ pub unsafe fn install_gdt() {
   gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF); // User mode code segment
   gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); // User mode data segment*/
 
-let GDT_CS =   (0x00180000000000); /*** code segment descriptor ***/
-let GDT_DS =     (0x00100000000000); /*** data segment descriptor ***/
+  let GDT_CS =   (0x00180000000000); /*** code segment descriptor ***/
+  let GDT_DS =     (0x00100000000000); /*** data segment descriptor ***/
 
-let DPL0  =        (0x00000000000000); /*** descriptor privilege level 0 ***/
-let P       =    (0x00800000000000); /*** present ***/
-let L      =       (0x20000000000000);  /*** long mode ***/
-let W      =       (0x00020000000000); /***writable data segment ***/
-    gdt[0] = 0;             // NULL descriptor
-    gdt[1] = GDT_CS | P | DPL0 | L;  /*** kernel code segment descriptor ***/
-    gdt[2] = GDT_DS | P | W;   /*** kernel data segment descriptor ***/
+  let DPL0  =        (0x00000000000000); /*** descriptor privilege level 0 ***/
+  let P       =    (0x00800000000000); /*** present ***/
+  let L      =       (0x20000000000000);  /*** long mode ***/
+  let W      =       (0x00020000000000); /***writable data segment ***/
+  gdt[0] = 0;             // NULL descriptor
+  gdt[1] = GDT_CS | P | DPL0 | W | L;  /*** kernel code segment descriptor ***/
+  gdt[2] = GDT_DS | P | W;   /*** kernel data segment descriptor ***/
 
-  stdio::print_long(&gdtp as *GDTPointer as u64);
   /* Load GDT */
   //load_gdt(gdtp, 8, 16);
   asm!("  lgdtq ($0) \n
           pushq %rsi \n
           movabsq $$1f, %r10 \n
           pushq %r10 \n
-          lretq \n
+          iretq \n
         1: \n
           movq $1, %es \n
           movq $1, %fs \n
@@ -84,6 +83,6 @@ let W      =       (0x00020000000000); /***writable data segment ***/
           movq $1, %ds \n
           movq $1, %ss \n
           retq"
-      :: "r" (gdtp), "r" (8)
+      :: "r" (&gdtp), "r" (8)
       );
 }

@@ -23,8 +23,6 @@ pub unsafe fn _interrupt_handler_kbd() {
     Some(c) => stdio::putc(c)
   }
   outb(0x20, 0x20);
-  console::println("3");
-  loop {}
 }
 
 pub fn change_state(scancode: u8) {

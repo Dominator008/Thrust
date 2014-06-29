@@ -120,7 +120,7 @@ start:
   and eax, ~7
   add ebx, eax
   jmp .find_mem_map
-.found_mem_map:         ; yay, memory map found :)
+.found_mem_map:        ; yay, memory map found :)
   mov [MemMap], ebx    ; found memory map, so store location for parsing
 
 .load_gdt1:
@@ -215,9 +215,9 @@ TmpGdt:
   gdt_entry 0, 0xFFFFF, ACCESS_FIELD(GRANULARITY_BIT(1) | SIZE_BIT(1) | \
                                      PRESENT_BIT(1) | READABLE_BIT(1))
   NULL_GDT_ENTRY
-  gdt_entry 0, 0, ACCESS_FIELD(SIZE_BIT(1) | LONG_BIT(1) | PRESENT_BIT(1) | \
+  gdt_entry 0, 0, ACCESS_FIELD(LONG_BIT(1) | PRESENT_BIT(1) | \
                                EXECUTABLE_BIT(1) | READABLE_BIT(1))
-  gdt_entry 0, 0, ACCESS_FIELD(SIZE_BIT(1) | LONG_BIT(1) | PRESENT_BIT(1) | \
+  gdt_entry 0, 0, ACCESS_FIELD(LONG_BIT(1) | PRESENT_BIT(1) | \
                                READABLE_BIT(1))
 
 Gdtr1:

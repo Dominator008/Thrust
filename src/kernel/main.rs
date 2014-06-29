@@ -6,9 +6,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#![crate_id(name = "kRnel",
+#![crate_id(name = "Thrust",
             vers = "0.0.1",
-            author = "Arcterus",
+            author = "Dominator008",
             license = "MPL v2.0")]
 
 #![allow(ctypes)]
@@ -62,7 +62,6 @@ pub fn main(mem: *memory::BootMemMap) {
   while len > 0 {
     unsafe { console::print_bytes([(len % 10 + '0' as uint) as u8, 0].as_ptr()); }
     len /= 10;
-    console::println("");
   }
   loop {}
 }

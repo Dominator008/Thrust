@@ -1,7 +1,6 @@
-use pic::pic_remap;
-use io::outb;
-
 use drivers::io::console;
+use io::outb;
+use pic::pic_remap;
 
 /* Defines an IDT entry */
 #[packed]
@@ -64,11 +63,6 @@ pub unsafe fn install_idt() {
   idtp.base = &idt as *[IDTEntry, ..256] as u64;
 
   /* Add any new ISRs to the IDT here using idt_set_gate */
-  idt_set_gate(32, int_handler_kbd_wrapper, 0x08, 0x8E);
-  idt_set_gate(34, int_handler_kbd_wrapper, 0x08, 0x8E);
-  idt_set_gate(35, int_handler_kbd_wrapper, 0x08, 0x8E);
-  idt_set_gate(36, int_handler_kbd_wrapper, 0x08, 0x8E);
-  idt_set_gate(37, int_handler_kbd_wrapper, 0x08, 0x8E);
   idt_set_gate(33, int_handler_kbd_wrapper, 0x08, 0x8E);
 
   /* Remap the PIC */
@@ -78,7 +72,8 @@ pub unsafe fn install_idt() {
   outb(0xa1, 0xff);
 
   /* Turn interrupts on */
-  asm!("lidtq ($0)" :: "r" (idtp));
-  asm!("sti");
-  asm!("int $$1");
+  asm!("lidtq ($0) \n
+        sti"
+       :: "r" (&idtp)
+      );
 }
