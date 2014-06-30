@@ -139,6 +139,9 @@ fn print_byte(byte: u8, foreground: Color, background: Color) {
         } else if col != 0 {
           col -= 1;
         }
+        let pos = row * MAX_COLUMN + col;
+        (*SCREEN)[pos].char = 0 as u8;
+        (*SCREEN)[pos].attr = ((background as u8) << 4) + (foreground as u8);
       }
       byte => {
         let pos = row * MAX_COLUMN + col;
@@ -150,6 +153,7 @@ fn print_byte(byte: u8, foreground: Color, background: Color) {
         }
       }
     }
+    move_cursor(row, col);
   }
 }
 
@@ -229,6 +233,7 @@ pub fn backspace() {
     } else {
       col -= 1;
     }
+    move_cursor(row, col);
     print_byte_default(0);
   }
 }

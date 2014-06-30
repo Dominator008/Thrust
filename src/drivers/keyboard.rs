@@ -26,8 +26,8 @@ pub unsafe fn _interrupt_handler_kbd() {
   change_state(scancode);
   match get_char(scancode) {
     None => {},
-    Some(8) => vga::backspace(),
-    Some(10) => vga::newline(),
+    //Some(8) => vga::backspace(),
+    //Some(10) => vga::newline(),
     Some(c) => stdio::putc(c)
   }
   out(0x20, 0x20);
