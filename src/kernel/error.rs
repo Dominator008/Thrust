@@ -6,13 +6,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-use super::console;
+use super::drivers::vga;
 
 pub fn panic(reason: &str) -> ! {
-  console::color_println("Ohs noes!  You've been harpooned!", console::Red, console::BACKGROUND_COLOR);
+  vga::color_println("Ohs noes!  You've been harpooned!", vga::Red, vga::BACKGROUND_COLOR);
   // print fail whale (kraken?)
-  console::print("Reason: ");
-  console::print(reason);
+  vga::print("Reason: ");
+  vga::print(reason);
   // wait 10 seconds
   abort();
 }

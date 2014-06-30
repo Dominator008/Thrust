@@ -13,15 +13,15 @@
 
 #![allow(ctypes)]
 #![no_std]
-#![feature(globs)]
-#![feature(asm)]
+#![feature(asm, macro_rules, default_type_params, phase, globs)]
 
+#[phase(plugin, link)]
 extern crate core;
 extern crate rlibc;
 
 pub use core::prelude::*;
+pub use core::fmt;
 
-pub use drivers::io::console;
 pub use platform::*;
 
 #[cfg(target_arch = "x86_64")]
@@ -30,37 +30,45 @@ pub mod platform;
 
 #[path = "../drivers"]
 pub mod drivers {
-  pub mod io {
-    pub mod console;
-  }
+  pub mod keyboard;
+  pub mod pic;
+  pub mod vga;
 }
 
-pub mod kbd;
-pub mod idt;
-pub mod gdt;
+#[path = "./cpu"]
+pub mod cpu {
+  pub mod idt;
+  pub mod io;
+  pub mod gdt;
+}
+
+pub mod macros;
 pub mod stdio;
 pub mod memory;
 pub mod error;
 pub mod support;
-pub mod pic;
-pub mod io;
+
+mod std {
+  // macros refer to absolute paths
+  pub use core::fmt;
+  pub use core::option;
+}
 
 #[no_mangle]
 pub fn kmain(mem: *memory::BootMemMap) {
   let mem: &memory::BootMemMap = unsafe { &(*mem) };
-  console::clear_screen();
-  console::print("iiiiiiiiiiiiiiiiiiiiiiiiiii\niiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\x08\x08\x08\x08\x08test");
-  console::println("");
+  drivers::vga::clear_screen();
+  println!("Thrust full throttle, version {}", "0.0.1");
 
   unsafe {
-    //gdt::install_gdt();
-    idt::install_idt();
+    //cpu::gdt::install_gdt();
+    cpu::idt::install_idt();
   }
 
   let usable = mem.usable();
   let mut len = usable.len();
   while len > 0 {
-    unsafe { console::print_bytes([(len % 10 + '0' as uint) as u8, 0].as_ptr()); }
+    unsafe { drivers::vga::print_bytes([(len % 10 + '0' as uint) as u8, 0].as_ptr()); }
     len /= 10;
   }
   loop {}

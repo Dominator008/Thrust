@@ -1,6 +1,5 @@
-use drivers::io::console;
-use io::outb;
-use pic::pic_remap;
+use cpu::io::out;
+use drivers::pic::remap;
 
 /* Defines an IDT entry */
 #[packed]
@@ -59,17 +58,17 @@ extern {
 #[no_mangle]
 pub unsafe fn install_idt() {
   /* Sets the special IDT pointer up  */
-  idtp.limit = ((super::core::mem::size_of::<IDTEntry>() * 256) - 1) as u16;
+  idtp.limit = ((super::super::core::mem::size_of::<IDTEntry>() * 256) - 1) as u16;
   idtp.base = &idt as *[IDTEntry, ..256] as u64;
 
   /* Add any new ISRs to the IDT here using idt_set_gate */
   idt_set_gate(33, int_handler_kbd_wrapper, 0x08, 0x8E);
 
   /* Remap the PIC */
-  pic_remap();
+  remap();
 
-  outb(0x21, 0xfd); // Keyboard interrupts only
-  outb(0xa1, 0xff);
+  out(0x21, 0xfd); // Keyboard interrupts only
+  out(0xa1, 0xff);
 
   /* Turn interrupts on */
   asm!("lidtq ($0) \n

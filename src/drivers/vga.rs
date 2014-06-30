@@ -1,57 +1,84 @@
 /*
- * Copyright (c) 2014 Arcterus
+ * Copyright (c) 2014 Dominator008
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-pub use self::platform::*;
+use core::mem::transmute;
+
+use cpu::io::out;
+//use platform::runtime::wmemset;
+
 use core::iter;
 use core::iter::Iterator;
 use core::option::{Some, None};
 use core::str::StrSlice;
 
-#[cfg(target_arch = "x86_64")]
-#[path = "arch/x86_64/mod.rs"]
-pub mod platform;
-
+#[repr(u8)]
 pub enum Color {
-  Black      = 0,
-  Blue       = 1,
-  Green      = 2,
-  Cyan       = 3,
-  Red        = 4,
-  Magenta    = 5,
-  Brown      = 6,
-  LightGray  = 7,
-  DarkGray   = 8,
-  LightBlue  = 9,
-  LightGreen = 10,
-  LightCyan  = 11,
-  LightRed   = 12,
-  Pink       = 13,
-  Yellow     = 14,
-  White      = 15
+  Black       = 0,
+  Blue        = 1,
+  Green       = 2,
+  Cyan        = 3,
+  Red         = 4,
+  Pink        = 5,
+  Brown       = 6,
+  LightGray   = 7,
+  DarkGray    = 8,
+  LightBlue   = 9,
+  LightGreen  = 10,
+  LightCyan   = 11,
+  LightRed    = 12,
+  LightPink   = 13,
+  Yellow      = 14,
+  White       = 15,
 }
-
-pub static BACKGROUND_COLOR: Color = DarkGray;
-pub static FOREGROUND_COLOR: Color = LightCyan;
-
-pub static SCREEN_SIZE: uint = MAX_ROW * MAX_COLUMN;
 
 #[packed]
 struct ScreenChar {
-  char: u8,
-  attr: u8
+  pub char: u8,
+  attr: u8,
 }
 
-pub type Screen = [ScreenChar, ..SCREEN_SIZE];
+impl ScreenChar {
+  #[inline]
+  pub fn new(c: char, fg: Color, bg: Color) -> ScreenChar {
+    ScreenChar { char: c as u8, attr: fg as u8 | (bg as u8 << 4) }
+  }
+}
 
-static mut SCREEN: *mut Screen = SCREEN_ADDR as *mut Screen;
+pub static MAX_ROW: uint = 25;
+pub static MAX_COLUMN: uint = 80;
+pub static SCREEN_ADDR: uint = 0xb8000;
+
+pub static SCREEN_SIZE: uint = MAX_ROW * MAX_COLUMN;
+type Screen = [ScreenChar, ..SCREEN_SIZE];
+pub static SCREEN: *mut Screen = SCREEN_ADDR as *mut Screen;
+
+pub static BACKGROUND_COLOR: Color = Black;
+pub static FOREGROUND_COLOR: Color = Green;
 
 static mut row: uint = 0;
 static mut col: uint = 0;
+
+/*pub unsafe fn clear_screen(bg: Color) {
+  wmemset(SCREEN as *mut u8, transmute(ScreenChar::new(' ', BACKGROUND_COLOR, bg)), SCREEN_SIZE);
+}*/
+
+pub unsafe fn move_cursor_pos(pos: uint) {
+  out(0x3D4, 15);
+  out(0x3D5, pos as u8);
+  out(0x3D4, 14);
+  out(0x3D5, (pos >> 8) as u8);
+}
+
+pub fn move_cursor(row: uint, col: uint) {
+  unsafe {
+    move_cursor_pos(row * MAX_COLUMN + col);
+  }
+}
 
 #[inline]
 pub fn print(msg: &str) {
@@ -126,6 +153,11 @@ fn print_byte(byte: u8, foreground: Color, background: Color) {
   }
 }
 
+#[inline]
+pub fn print_byte_default(byte: u8) {
+  print_byte(byte, FOREGROUND_COLOR, BACKGROUND_COLOR);
+}
+
 pub fn color_clear_screen(background: Color) {
   unsafe {
     for line in iter::range(0, MAX_ROW) {
@@ -169,6 +201,7 @@ fn add_line(background: Color) {
       row -= 1;
       shift_rows_up();
     }
+    move_cursor(row, col);
   }
 }
 
@@ -186,4 +219,22 @@ fn shift_rows_up() {
     }
   }
   clear_line(MAX_ROW - 1, BACKGROUND_COLOR);
+}
+
+pub fn backspace() {
+  unsafe {
+    if col == 0 {
+      row -= 1;
+      col = MAX_COLUMN - 1;
+    } else {
+      col -= 1;
+    }
+    print_byte_default(0);
+  }
+}
+
+pub fn newline() {
+  unsafe {
+    add_line(BACKGROUND_COLOR);
+  }
 }
