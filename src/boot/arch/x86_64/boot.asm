@@ -1,3 +1,9 @@
+; Copyright (c) 2014 Dominator008
+;
+; This Source Code Form is subject to the terms of the Mozilla Public
+; License, v. 2.0. If a copy of the MPL was not distributed with this
+; file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
 %macro gdt_entry 3
   dq (((%1) << 32) & 0xFF00000000000000) | \
      (((%3) << 40) & 0x00F0FF0000000000) | \

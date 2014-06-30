@@ -50,4 +50,4 @@ $ ninja run
 Copyright (C) 2014 Dominator008.
 All rights reserved.
 
-See License.txt for description of this project's license.
+See LICENSE.txt for description of this project's license.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Arcterus
+ * Copyright (c) 2014 Dominator008 
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -27,3 +27,4 @@ pub fn abort() -> ! {
 pub fn rust_begin_unwind(_: &::core::fmt::Arguments, file: &'static str, _: uint) -> ! {
   panic(file);
 }
+
