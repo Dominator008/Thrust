@@ -55,7 +55,7 @@ mod std {
 }
 
 #[no_mangle]
-pub fn kmain(mem: *memory::BootMemMap) {
+pub fn kmain(mem: *const memory::BootMemMap) {
   let mem: &memory::BootMemMap = unsafe { &(*mem) };
   drivers::vga::clear_screen();
   println!("Thrust full throttle, version {}", "0.0.1");

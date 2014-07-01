@@ -54,7 +54,7 @@ pub static MAX_COLUMN: uint = 80;
 pub static SCREEN_ADDR: uint = 0xb8000;
 
 pub static SCREEN_SIZE: uint = MAX_ROW * MAX_COLUMN;
-type Screen = [ScreenChar, ..SCREEN_SIZE];
+pub type Screen = [ScreenChar, ..SCREEN_SIZE];
 pub static SCREEN: *mut Screen = SCREEN_ADDR as *mut Screen;
 
 pub static BACKGROUND_COLOR: Color = Black;
@@ -68,9 +68,9 @@ static mut col: uint = 0;
 }*/
 
 pub unsafe fn move_cursor_pos(pos: uint) {
-  out(0x3D4, 15);
+  out(0x3D4, 15 as u8);
   out(0x3D5, pos as u8);
-  out(0x3D4, 14);
+  out(0x3D4, 14 as u8);
   out(0x3D5, (pos >> 8) as u8);
 }
 
@@ -113,15 +113,15 @@ pub fn color_print(msg: &str, foreground: Color, background: Color) {
 }
 
 #[inline]
-pub unsafe fn print_bytes(msg: *u8) {
+pub unsafe fn print_bytes(msg: *const u8) {
   color_print_bytes(msg, FOREGROUND_COLOR, BACKGROUND_COLOR);
 }
 
-pub unsafe fn color_print_bytes(msg: *u8, foreground: Color, background: Color) {
+pub unsafe fn color_print_bytes(msg: *const u8, foreground: Color, background: Color) {
   let mut msg = msg;
   while *msg != 0 {
     print_byte(*msg, foreground, background);
-    msg = (msg as uint + 1) as *u8;
+    msg = (msg as uint + 1) as *const u8;
   }
   move_cursor(row, col);
 }
@@ -239,7 +239,5 @@ pub fn backspace() {
 }
 
 pub fn newline() {
-  unsafe {
-    add_line(BACKGROUND_COLOR);
-  }
+  add_line(BACKGROUND_COLOR);
 }

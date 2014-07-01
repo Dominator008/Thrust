@@ -67,7 +67,7 @@ extern {
 pub unsafe fn install_idt() {
   /* Sets the special IDT pointer up  */
   idtp.limit = ((super::super::core::mem::size_of::<IDTEntry>() * 256) - 1) as u16;
-  idtp.base = &idt as *[IDTEntry, ..256] as u64;
+  idtp.base = &idt as * const[IDTEntry, ..256] as u64;
 
   /* Add any new ISRs to the IDT here using idt_set_gate */
   idt_set_gate(33, int_handler_kbd_wrapper, 0x08, 0x8E);
@@ -75,8 +75,8 @@ pub unsafe fn install_idt() {
   /* Remap the PIC */
   remap();
 
-  out(0x21, 0xfd); // Keyboard interrupts only
-  out(0xa1, 0xff);
+  out(0x21, 0xfd as u8); // Keyboard interrupts only
+  out(0xa1, 0xff as u8);
 
   /* Turn interrupts on */
   asm!("lidtq ($0) \n

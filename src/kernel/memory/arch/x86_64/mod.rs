@@ -37,7 +37,7 @@ impl BootMemMap {
     let mut count = 0;
     for i in range_step(0, self.size as uint, self.entry_size as uint) {
       unsafe {
-        let entry = (transmute::<&(), uint>(&self.entries) + i) as *Entry;
+        let entry = (transmute::<&(), uint>(&self.entries) + i) as *const Entry;
         if (*entry).mtype == USABLE {
           *addr = transmute(entry);
           addr = (addr as uint + size_of::<&'a Entry>()) as *mut &'a Entry;

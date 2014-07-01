@@ -33,12 +33,12 @@ pub unsafe fn remap() {
   out(PIC2_COMMAND, ICW1_INIT+ICW1_ICW4);
   out(PIC1_DATA, REMAP_BASE);             // ICW2: Master PIC vector offset
   out(PIC2_DATA, REMAP_BASE + 8);         // ICW2: Slave PIC vector offset
-  out(PIC1_DATA, 4);                      // ICW3: tell Master PIC that there is a slave PIC at IRQ2 (0000 0100)
-  out(PIC2_DATA, 2);                      // ICW3: tell Slave PIC its cascade identity (0000 0010)
+  out(PIC1_DATA, 4 as u8);                // ICW3: tell Master PIC that there is a slave PIC at IRQ2 (0000 0100)
+  out(PIC2_DATA, 2 as u8);                // ICW3: tell Slave PIC its cascade identity (0000 0010)
   out(PIC1_DATA, ICW4_8086);
   out(PIC2_DATA, ICW4_8086);
-  out(PIC1_DATA, 0x0);
-  out(PIC2_DATA, 0x0);
+  out(PIC1_DATA, 0x0 as u8);
+  out(PIC2_DATA, 0x0 as u8);
 }
 
 pub unsafe fn enable(irq: u8) {

@@ -58,7 +58,7 @@ pub static mut gdtp: GDTPointer = GDTPointer {limit: 0, base: 0};
 #[no_mangle]
 pub unsafe fn install_gdt() {
   gdtp.limit = ((super::super::core::mem::size_of::<u64>() * 5) - 1) as u16;
-  gdtp.base = &gdt as *[u64, ..5] as u64;
+  gdtp.base = &gdt as *const[u64, ..5] as u64;
 
   /*gdt_set_gate(0, 0, 0, 0, 0);                // Null segment
   gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF); // Kernel code segment
@@ -91,6 +91,6 @@ pub unsafe fn install_gdt() {
           movq $1, %ds \n
           movq $1, %ss \n
           retq"
-      :: "r" (&gdtp), "r" (8)
+      :: "r" (&gdtp), "r" (8 as uint)
       );
 }

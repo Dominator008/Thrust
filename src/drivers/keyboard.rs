@@ -8,7 +8,6 @@
 
 use cpu::io::{inb, out};
 use core::option::{Option, Some, None};
-use drivers::vga;
 
 use stdio;
 
@@ -30,7 +29,7 @@ pub unsafe fn _interrupt_handler_kbd() {
     //Some(10) => vga::newline(),
     Some(c) => stdio::putc(c)
   }
-  out(0x20, 0x20);
+  out(0x20, 0x20 as u8);
 }
 
 pub fn change_state(scancode: u8) {
